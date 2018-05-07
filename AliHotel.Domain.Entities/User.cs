@@ -11,20 +11,21 @@ namespace AliHotel.Domain.Entities
     public class User : IdentityUser<Guid>
     {
         /// <summary>
-        /// Users Id
+        /// User's Id
         /// </summary>
         [Key]
         public override Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
-        /// Users e-mail
+        /// User's e-mail
         /// </summary>
         [Required(ErrorMessage = "Please, enter your e-mail")]
         [StringLength(255)]
+        [EmailAddress]
         public override string Email { get; set; }
 
         /// <summary>
-        /// Users full name
+        /// User's full name
         /// </summary>
         [Required(ErrorMessage = "Please, enter your full name")]
         [StringLength(255)]
@@ -43,14 +44,14 @@ namespace AliHotel.Domain.Entities
         public bool IsRenter { get; set; }
 
         /// <summary>
-        /// Users birthdate
+        /// User's birthdate
         /// </summary>
         [Required(ErrorMessage = "Please, enter your birthdate. You must be at least 18 y.o.")]
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
 
         /// <summary>
-        /// Users credit card number
+        /// User's credit card number
         /// </summary>
         [StringLength(255)]
         public string CreditCard { get; set; }

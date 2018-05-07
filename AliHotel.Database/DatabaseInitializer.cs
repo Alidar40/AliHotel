@@ -6,6 +6,9 @@ using AliHotel.Domain.Entities;
 
 namespace AliHotel.Database
 {
+    /// <summary>
+    /// Static extension class
+    /// </summary>
     public static class DatabaseInitializer
     {
         public static async Task Initialize(this DatabaseContext context, IServiceProvider services)

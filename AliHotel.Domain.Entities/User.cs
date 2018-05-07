@@ -1,27 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace AliHotel.Domain.Entities
 {
     /// <summary>
     /// This class describes user
     /// </summary>
-    class User
+    public class User : IdentityUser<Guid>
     {
         /// <summary>
         /// Users Id
         /// </summary>
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public override Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Users e-mail
         /// </summary>
         [Required(ErrorMessage = "Please, enter your e-mail")]
         [StringLength(255)]
-        public string Email { get; set; }
+        public override string Email { get; set; }
 
         /// <summary>
         /// Users full name
@@ -33,9 +33,9 @@ namespace AliHotel.Domain.Entities
         /// <summary>
         /// Describes whether user confirmed his e-mail or not
         /// </summary>
-        public bool EmailConfirmed { get; set; }
+        public override bool EmailConfirmed { get; set; }
 
-        public string PasswordHash { get; set; }
+        public override string PasswordHash { get; set; }
 
         /// <summary>
         /// Describes whether user have current booking or not

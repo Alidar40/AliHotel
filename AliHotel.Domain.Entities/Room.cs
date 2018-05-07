@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace AliHotel.Domain.Entities
 {
-    class Room
+    /// <summary>
+    /// This class describes hotel's room
+    /// </summary>
+    public class Room
     {
         /// <summary>
         /// Rooms Id

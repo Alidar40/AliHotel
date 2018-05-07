@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace AliHotel.Domain.Entities
 {
-    class RoomType
+    /// <summary>
+    /// This class describes type of rooms
+    /// </summary>
+    public class RoomType
     {
         /// <summary>
         /// RoomTypes Id

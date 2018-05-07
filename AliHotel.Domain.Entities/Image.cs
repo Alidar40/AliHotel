@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace AliHotel.Domain.Entities
 {
-    class Image
+    /// <summary>
+    /// This class describes room's image
+    /// </summary>
+    public class Image
     {
         /// <summary>
         /// Image Id

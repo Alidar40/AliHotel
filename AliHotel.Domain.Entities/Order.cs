@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace AliHotel.Domain.Entities
 {
-    class Order
+    /// <summary>
+    /// This class describes user's order
+    /// </summary>
+    public class Order
     {
         /// <summary>
         /// Orders Id

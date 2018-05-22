@@ -9,7 +9,7 @@ namespace AliHotel.Database
     /// <summary>
     /// Context of database
     /// </summary>
-    public class DatabaseContext: IdentityDbContext<User, IdentityRole<Guid>, Guid>
+    public class DatabaseContext: DbContext//IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> opt): base(opt)
         {

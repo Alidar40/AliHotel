@@ -17,6 +17,14 @@ namespace AliHotel.Domain.Entities
         public Guid Id { get; set; }
 
         /// <summary>
+        /// RoomTypes Id
+        /// </summary>
+        [ForeignKey(nameof(RoomType))]
+        public Guid RoomTypeId { get; set; }
+
+        public RoomType RoomType { get; set; }
+
+        /// <summary>
         /// Describes whether room is occupied or not
         /// </summary>
         public bool IsOccupied { get; set; }
@@ -32,15 +40,7 @@ namespace AliHotel.Domain.Entities
         /// </summary>
         [Required]
         public int Capacity { get; set; }
-
-        /// <summary>
-        /// RoomTypes Id
-        /// </summary>
-        [ForeignKey(nameof(RoomType))]
-        public Guid RoomTypeId { get; set; }
-
-        public RoomType RoomType { get; set; }
-
+        
         /// <summary>
         /// All images related to this room
         /// </summary>

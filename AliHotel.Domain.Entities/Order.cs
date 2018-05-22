@@ -16,6 +16,14 @@ namespace AliHotel.Domain.Entities
         public Guid Id { get; set; }
 
         /// <summary>
+        /// Rooms Id
+        /// </summary>
+        [ForeignKey(nameof(Room))]
+        public Guid RoomId { get; set; }
+
+        public Room Room { get; set; }
+
+        /// <summary>
         /// Users Id
         /// </summary>
         [ForeignKey(nameof(User))]
@@ -42,15 +50,7 @@ namespace AliHotel.Domain.Entities
         /// <summary>
         /// The final sum that user has to pay for accomodation
         /// </summary>
-        public int Bill { get; set; }
-        
-        /// <summary>
-        /// Rooms Id
-        /// </summary>
-        [ForeignKey(nameof(Room))]
-        public Guid RoomId { get; set; }
-
-        public Room Room { get; set; }
+        public decimal Bill { get; set; }
 
         /// <summary>
         /// Default constructor

@@ -8,13 +8,13 @@ namespace AliHotel.Domain.Entities
     /// <summary>
     /// This class describes user
     /// </summary>
-    public class User : IdentityUser<Guid>
+    public class User// : IdentityUser<Guid>
     {
         /// <summary>
         /// User's Id
         /// </summary>
         [Key]
-        public override Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// User's e-mail
@@ -22,7 +22,7 @@ namespace AliHotel.Domain.Entities
         [Required(ErrorMessage = "Please, enter your e-mail")]
         [StringLength(255)]
         [EmailAddress]
-        public override string Email { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// User's full name
@@ -34,9 +34,9 @@ namespace AliHotel.Domain.Entities
         /// <summary>
         /// Describes whether user confirmed his e-mail or not
         /// </summary>
-        public override bool EmailConfirmed { get; set; }
+        public bool EmailConfirmed { get; set; }
 
-        public override string PasswordHash { get; set; }
+        public string PasswordHash { get; set; }
 
         /// <summary>
         /// Describes whether user have current booking or not
@@ -59,7 +59,7 @@ namespace AliHotel.Domain.Entities
         /// <summary>
         /// History of all bookings made by the user
         /// </summary>
-        public virtual List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; }
 
         /// <summary>
         /// Default user constructor

@@ -28,7 +28,7 @@ namespace AliHotel.Domain.Interfaces
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        Task<int> PayOrder(Guid orderId);
+        Task<decimal> PayOrder(Guid orderId);
 
         /// <summary>
         /// Edit order's departure day

@@ -28,6 +28,7 @@ namespace AliHotel.Domain.Services
         public List<Order> Orders => _context.Orders
             .Include(x => x.User)
             .Include(x => x.Room)
+            .ThenInclude(x => x.RoomType)
             .ToList();
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace AliHotel.Domain.Services
         /// </summary>
         /// <param name="orderId"></param>
         /// <returns></returns>
-        public async Task<int> PayOrder(Guid orderId)
+        public async Task<decimal> PayOrder(Guid orderId)
         {
             var resultList = await _context.Orders
                 .Include(x => x.User)
@@ -65,7 +66,7 @@ namespace AliHotel.Domain.Services
                 throw new NullReferenceException($"reference to order is null");
             }
 
-            var resultSum = (resultOrder.DepartureDate - resultOrder.ArrivalDate).Days * (resultOrder.Room.RoomType.Price + (resultOrder.Room.Capacity - 1) * resultOrder.Room.RoomType.PricePerMen);
+            decimal resultSum = (resultOrder.DepartureDate - resultOrder.ArrivalDate).Days * (resultOrder.Room.RoomType.Price + (resultOrder.Room.Capacity - 1) * resultOrder.Room.RoomType.PricePerMen);
             _context.Orders.ToList().SingleOrDefault(x => x.Id == orderId).Bill = resultSum;
             //resultOrder.IsClosed = true;
             _context.Orders.ToList().SingleOrDefault(x => x.Id == orderId).IsClosed = true;

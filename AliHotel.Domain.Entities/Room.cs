@@ -25,7 +25,7 @@ namespace AliHotel.Domain.Entities
         public RoomType RoomType { get; set; }
 
         /// <summary>
-        /// Describes whether room is occupied or not
+        /// Describes whether room is occupied or not (true means is occupied)
         /// </summary>
         public bool IsOccupied { get; set; }
 
@@ -39,11 +39,33 @@ namespace AliHotel.Domain.Entities
         /// Describes how many people the room is designed for
         /// </summary>
         [Required]
+        [Range(0, Int32.MaxValue)]
         public int Capacity { get; set; }
         
         /// <summary>
         /// All images related to this room
         /// </summary>
         public List<Image> Images { get; set; }
+        
+        public Room()
+        {
+
+        }
+
+        /// <summary>
+        /// Room constructor
+        /// </summary>
+        /// <param name="id">Номер комнаты</param>
+        /// <param name="maxCount">Максимальное число людей, которые могут проживать в комнате</param>
+        /// <param name="price">Цена за комнату</param>
+        /// <param name="roomOption">Тип комнаты</param>
+        /// <param name="isFree">Свободна ли комната</param>
+        public Room(Guid id, int maxCount, bool isOccupied, RoomType roomType)
+        {
+            Id = id;
+            Capacity = maxCount;
+            IsOccupied = isOccupied;
+            RoomTypeId = roomType.Id;
+        }
     }
 }

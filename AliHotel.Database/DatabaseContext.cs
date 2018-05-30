@@ -9,11 +9,21 @@ namespace AliHotel.Database
     /// <summary>
     /// Context of database
     /// </summary>
-    public class DatabaseContext: DbContext//IdentityDbContext<User, IdentityRole<Guid>, Guid>
+    public class DatabaseContext: DbContext
     {
         public DatabaseContext(DbContextOptions<DatabaseContext> opt): base(opt)
         {
         }
+
+        /// <summary>
+        /// Users
+        /// </summary>
+        public DbSet<User> Users { get; set; }
+
+        /// <summary>
+        /// Roles
+        /// </summary>
+        public DbSet<Role> Roles { get; set; }
 
         /// <summary>
         /// List of orders
@@ -35,6 +45,7 @@ namespace AliHotel.Database
         {
             modelBuilder.Entity<Order>().HasKey(x => new { x.UserId, x.RoomId });
             modelBuilder.Entity<Room>().HasKey(x => new { x.RoomTypeId });
+            modelBuilder.Entity<User>().HasKey(x => new { x.RoleId });
             base.OnModelCreating(modelBuilder);
         }
     }

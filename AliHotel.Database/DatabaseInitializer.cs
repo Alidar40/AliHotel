@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using AliHotel.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace AliHotel.Database
 {
@@ -17,25 +18,39 @@ namespace AliHotel.Database
             var roleManager = services.GetService<RoleManager<IdentityRole>>();
 
             //Initializing roles
-            foreach (var roleOpt in Enum.GetValues(typeof(RolesOptions)))
+            foreach (RolesOptions role in Enum.GetValues(typeof(RolesOptions)))
             {
-                var roleName = Enum.GetName(typeof(RolesOptions), roleOpt);
-                var role = await roleManager.FindByNameAsync(roleName);
-                if (role == null)
+                var roleForAdd = await context.Roles.SingleOrDefaultAsync(x => x.Id == role);
+                if (roleForAdd == null)
                 {
-                    role = new IdentityRole(roleName);
-                    await roleManager.CreateAsync(role);
+                    roleForAdd = new Role(role, Enum.GetName(typeof(RolesOptions), role));
+                    await context.Roles.AddAsync(roleForAdd);
                 }
             }
-            
+
             //Initializing administrator
-            var admin = new User("admin", "admin@alihotel.com", DateTime.Parse("01/01/1980"));
-            var adminPassword = "admin";
-            var result = await userManager.CreateAsync(admin, adminPassword);
-            if (result.Succeeded)
+            var admin = await context.Users.SingleOrDefaultAsync(x =>
+                    x.Name == "admin" && x.RoleId == RolesOptions.Admin);
+
+            if (admin == null)
             {
-                await userManager.AddToRoleAsync(admin, nameof(RolesOptions.Admin));
+                var hashProvider = services.GetService<IPasswordHasher<User>>();
+                var passwordSalt = "adminsalt";
+                var password = "admin";
+                var resultHash = hashProvider.HashPassword(null, password + passwordSalt);
+                admin = new User
+                {
+                    Name = "admin",
+                    Email = "admin",
+                    BirthDate = DateTime.Parse("01/01/1980"),
+                    PhoneNumber = "adminNumber",
+                    PasswordSalt = passwordSalt,
+                    PasswordHash = resultHash,
+                    RoleId = RolesOptions.Admin,
+                };
+                await context.Users.AddAsync(admin);
             }
+            await context.SaveChangesAsync();
         }
     }
 }

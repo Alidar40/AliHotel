@@ -9,7 +9,7 @@ namespace AliHotel.Domain.Interfaces
     /// <summary>
     /// Interface for working with orders
     /// </summary>
-    interface IOrderService
+    public interface IOrderService
     {
         /// <summary>
         /// List of orders

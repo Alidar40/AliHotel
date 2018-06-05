@@ -14,9 +14,6 @@ namespace AliHotel.Database
     {
         public static async Task Initialize(this DatabaseContext context, IServiceProvider services)
         {
-            var userManager = services.GetService<UserManager<User>>();
-            var roleManager = services.GetService<RoleManager<IdentityRole>>();
-
             //Initializing roles
             foreach (RolesOptions role in Enum.GetValues(typeof(RolesOptions)))
             {

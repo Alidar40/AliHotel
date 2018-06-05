@@ -1,7 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using AliHotel.Domain.Entities;
 
 namespace AliHotel.Database
@@ -43,9 +40,9 @@ namespace AliHotel.Database
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Order>().HasKey(x => new { x.UserId, x.RoomId });
-            modelBuilder.Entity<Room>().HasKey(x => new { x.RoomTypeId });
-            modelBuilder.Entity<User>().HasKey(x => new { x.RoleId });
+            //modelBuilder.Entity<User>().HasKey(x => new { x.RoleId });
+            //modelBuilder.Entity<Room>().HasKey(x => new { x.RoomTypeId });
+            //modelBuilder.Entity<Order>().HasKey(x => new { x.UserId, x.RoomId });
             base.OnModelCreating(modelBuilder);
         }
     }

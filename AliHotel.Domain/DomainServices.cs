@@ -17,6 +17,8 @@ namespace AliHotel.Domain
         public static IServiceCollection AddDomainServices(this IServiceCollection service)
         {
             service.AddScoped<IOrderService, OrderService>();
+            service.AddScoped<IAuthorizationService, AuthorizationService>();
+            service.AddScoped<IUserService, UserService>();
 
             return service;
         }

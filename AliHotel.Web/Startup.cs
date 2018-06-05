@@ -29,15 +29,15 @@ namespace AliHotel.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(x);
+            services.AddMvc();
 
             //Add database context
             services.AddDbContext<DatabaseContext>(x =>
                 x.UseNpgsql(Configuration["ConnectionStrings:ConnectionToDb"],
-                assemb => assemb.MigrationsAssembly("HotelTest.Web")));
+                assemb => assemb.MigrationsAssembly("AliHotel.Web")));
 
             //Add authentication
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, Role>()
                 //.AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
 

@@ -13,6 +13,7 @@ using AliHotel.Domain.Entities;
 using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using AliHotel.Identity;
 
 namespace AliHotel.Web
 {
@@ -36,8 +37,19 @@ namespace AliHotel.Web
                 x.UseNpgsql(Configuration["ConnectionStrings:ConnectionToDb"],
                 assemb => assemb.MigrationsAssembly("AliHotel.Web")));
 
+            //Services for user authentication and password validation
+            services.AddScoped<IHashProvider, Md5HashService>();
+            services.AddScoped<IPasswordHasher<User>, Md5PasswordHasher>();
+
+
             //Add authentication
-            services.AddIdentity<User, Role>()
+            services.AddIdentity<User, Role>(options =>
+                        {
+                            options.User.RequireUniqueEmail = true;
+                        })
+                .AddRoleStore<RoleStore>()
+                .AddUserStore<IdentityStore>()
+                .AddPasswordValidator<Md5PasswordValidator>()
                 //.AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
 

@@ -25,6 +25,7 @@
     <ProjectReference Include="..\AliHotel.Database\AliHotel.Database.csproj" />
     <ProjectReference Include="..\AliHotel.Domain.Entities\AliHotel.Domain.Entities.csproj" />
     <ProjectReference Include="..\AliHotel.Domain\AliHotel.Domain.csproj" />
+    <ProjectReference Include="..\AliHotel.Identity\AliHotel.Identity.csproj" />
   </ItemGroup>
   
   

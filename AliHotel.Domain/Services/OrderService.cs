@@ -78,10 +78,9 @@ namespace AliHotel.Domain.Services
         /// Edit order's departure day
         /// </summary>
         /// <param name="orderId"></param>
-        /// <param name="orderModel"></param>
         /// <param name="newDepDate"></param>
         /// <returns></returns>
-        public async Task EditDepartureDay(Guid orderId, OrderModel orderModel, DateTime newDepDate)
+        public async Task EditDepartureDay(Guid orderId, DateTime newDepDate)
         {
             var resultList = await _context.Orders.ToListAsync();
             var resultOrder = resultList.SingleOrDefault(x => x.Id == orderId);
@@ -109,6 +108,21 @@ namespace AliHotel.Domain.Services
                 .Include(x => x.User)
                 .Include(x => x.Room)
                 .ToListAsync();
+        }
+
+        /// <summary>
+        /// Finds order by Id
+        /// </summary>
+        /// <param name="id">Order's id</param>
+        /// <returns></returns>
+        public async Task<Order> FindByIdAsync(Guid id)
+        {
+            var resultOrder = await _context.Orders.SingleOrDefaultAsync(x => x.Id == id);
+            if (resultOrder == null)
+            {
+                throw new NullReferenceException($"There is no order with such id: {id} !");
+            }
+            return resultOrder;
         }
     }
 }

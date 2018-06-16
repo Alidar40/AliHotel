@@ -34,15 +34,21 @@ namespace AliHotel.Domain.Interfaces
         /// Edit order's departure day
         /// </summary>
         /// <param name="orderId"></param>
-        /// <param name="orderModel"></param>
         /// <param name="newDepDate">New departure day</param>
         /// <returns></returns>
-        Task EditDepartureDay(Guid orderId, OrderModel orderModel, DateTime newDepDate);
+        Task EditDepartureDay(Guid orderId, DateTime newDepDate);
 
         /// <summary>
         /// Get all orders
         /// </summary>
         /// <returns></returns>
         Task<List<Order>> GetAsync();
+
+        /// <summary>
+        /// Returns order by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<Order> FindByIdAsync(Guid id);
     }
 }

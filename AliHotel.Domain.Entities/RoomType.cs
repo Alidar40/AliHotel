@@ -12,7 +12,7 @@ namespace AliHotel.Domain.Entities
         /// RoomTypes Id
         /// </summary>
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Name of the type
@@ -28,5 +28,26 @@ namespace AliHotel.Domain.Entities
         /// Price for each additional person
         /// </summary>
         public int PricePerMen { get; set; }
+
+        /// <summary>
+        /// Default RoomType constructor
+        /// </summary>
+        public RoomType()
+        {
+
+        }
+
+        /// <summary>
+        /// RoomType constructor
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="price"></param>
+        /// <param name="pricePerMen"></param>
+        public RoomType(string name, decimal price, int pricePerMen)
+        {
+            Name = name;
+            Price = price;
+            PricePerMen = pricePerMen;
+        }
     }
 }

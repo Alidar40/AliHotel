@@ -14,7 +14,7 @@ namespace AliHotel.Domain.Entities
         /// Rooms Id
         /// </summary>
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// RoomTypes Id
@@ -52,19 +52,11 @@ namespace AliHotel.Domain.Entities
 
         }
 
-        /// <summary>
-        /// Room constructor
-        /// </summary>
-        /// <param name="id">Номер комнаты</param>
-        /// <param name="maxCount">Максимальное число людей, которые могут проживать в комнате</param>
-        /// <param name="price">Цена за комнату</param>
-        /// <param name="roomOption">Тип комнаты</param>
-        /// <param name="isFree">Свободна ли комната</param>
-        public Room(Guid id, int maxCount, bool isOccupied, RoomType roomType)
+        
+        public Room(int number, int maxCount, RoomType roomType)
         {
-            Id = id;
+            Number = number;
             Capacity = maxCount;
-            IsOccupied = isOccupied;
             RoomTypeId = roomType.Id;
         }
     }

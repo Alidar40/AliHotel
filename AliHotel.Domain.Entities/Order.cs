@@ -73,6 +73,8 @@ namespace AliHotel.Domain.Entities
             this.RoomId = roomId;
             this.ArrivalDate = arrivalDate;
             this.DepartureDate = departureDate;
+            this.IsClosed = true;
+            this.Bill = 0;
         }
     }
 }

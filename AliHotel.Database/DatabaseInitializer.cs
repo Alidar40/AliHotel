@@ -47,6 +47,55 @@ namespace AliHotel.Database
                 };
                 await context.Users.AddAsync(admin);
             }
+
+            {
+                var standartRoom = await context.RoomTypes.SingleOrDefaultAsync(x => x.Name == "Standart");
+                var semiSuiteRoom = await context.RoomTypes.SingleOrDefaultAsync(x => x.Name == "Semi-suite");
+                var suiteRoom = await context.RoomTypes.SingleOrDefaultAsync(x => x.Name == "Suite");
+
+                if (standartRoom == null)
+                {
+                    standartRoom = new RoomType("Standart", 1000, 200);
+                    await context.RoomTypes.AddAsync(standartRoom);
+                }
+
+                if (semiSuiteRoom == null)
+                {
+                    semiSuiteRoom = new RoomType("Semi-suite", 2000, 500);
+                    await context.RoomTypes.AddAsync(semiSuiteRoom);
+                }
+
+                if (suiteRoom == null)
+                {
+                    suiteRoom = new RoomType("Suite", 3000, 1000);
+                    await context.RoomTypes.AddAsync(suiteRoom);
+                }
+
+                var roomCount = await context.Rooms.CountAsync();
+
+                if(roomCount == 0)
+                {
+                    for (int i = 1; i <= 35; i++)
+                    {
+                        Room room;
+                        if (i < 20)
+                        {
+                            room = new Room(i, 4, standartRoom);
+                        }
+                        else if (i < 30)
+                        {
+                            room = new Room(i, 3, semiSuiteRoom);
+                        }
+                        else
+                        {
+                            room = new Room(i, 2, suiteRoom);
+                        }
+
+                        await context.Rooms.AddAsync(room);
+                    }
+                }
+                
+            }
             await context.SaveChangesAsync();
         }
     }

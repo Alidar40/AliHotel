@@ -31,6 +31,7 @@ namespace AliHotel.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             //Add database context
             services.AddDbContext<DatabaseContext>(x =>

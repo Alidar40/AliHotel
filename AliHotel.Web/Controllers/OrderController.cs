@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using AliHotel.Web.Extensions;
 using AliHotel.Domain.Models;
 using AliHotel.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace AliHotel.Web.Controllers
 {
@@ -21,21 +22,53 @@ namespace AliHotel.Web.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderService _orderService;
+        private readonly UserManager<User> _userManager;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService, UserManager<User> userManager)
         {
             _orderService = orderService;
+            _userManager = userManager;
         }
 
         /// <summary>
         /// Returns all orders
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<object> GetOrders()
+        [HttpGet("AllOrders")]
+        [Authorize(Roles = "Admin")]
+        public async Task<object> GetAllOrders()
         {
             var result = await _orderService.GetAsync();
             return result.Select(x => x?.OrderView());
+        }
+
+        /// <summary>
+        /// Returns all users orders
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("MyOrders")]
+        public async Task<object> GetAllUsersOrders()
+        {
+            var result = await _orderService.GetAsync();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            return result.Where(x => x.User == user).Select(x => x?.OrderView());
+        }
+
+        /// <summary>
+        /// Returns users current order
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("CurrentOrder")]
+        public async Task<object> GetCurrentOrder()
+        {
+            var result = await _orderService.GetAsync();
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (!result.Any(x => x.User == user && x.IsClosed == false))
+            {
+                return "You have not active order.";
+            }
+            return result.Where(x => x.User == user).Select(x => x?.OrderView());
         }
 
         /// <summary>
@@ -52,19 +85,27 @@ namespace AliHotel.Web.Controllers
         /// <summary>
         /// Changes departure day
         /// </summary>
-        /// <param name="userId"></param>
         /// <param name="orderId"></param>
         /// <param name="newDepDate"></param>
         /// <returns></returns>
-        [HttpPut]
-        public async Task EditDepartureDay([FromQuery] Guid userId, [FromQuery]Guid orderId, [FromBody]DateTime newDepDate)
+        [HttpPut("EditDepartureDay")]
+        public async Task<object> EditDepartureDay([FromQuery]Guid orderId, [FromBody]DateTime newDepDate)
         {
+            var r = Request;
             var order = _orderService.FindByIdAsync(orderId);
-            if(order.Result.UserId != userId)
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (user.Id != order.Result.UserId)
             {
                 throw new UnauthorizedAccessException("You have not permissions to edit this order");
             }
+
+            if(order.Result.IsClosed)
+            {
+                throw new Exception("It is impossible to edit this order");
+            }
             await _orderService.EditDepartureDay(orderId, newDepDate);
+            return newDepDate;
         }
     }
 }

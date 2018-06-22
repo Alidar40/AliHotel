@@ -3,6 +3,7 @@ using AliHotel.Domain.Entities;
 using AliHotel.Domain.Interfaces;
 using AliHotel.Domain.Models;
 using AliHotel.Domain.Utils;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,16 +21,18 @@ namespace AliHotel.Domain.Services
     {
         private readonly DatabaseContext _context;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public List<User> Users => _context.Users
             .Include(x => x.Role)
             .Include(x => x.Orders)
             .ToList();
 
-        public UserService(DatabaseContext context, IPasswordHasher<User> passwordHasher)
+        public UserService(DatabaseContext context, IPasswordHasher<User> passwordHasher, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
             _passwordHasher = passwordHasher;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         /// <summary>
@@ -136,6 +139,16 @@ namespace AliHotel.Domain.Services
                 throw new NullReferenceException($"There is no user with such id: {id} !");
             }
             return resultUser;
+        }
+
+        /// <summary>
+        /// Returns whether user is logged
+        /// </summary>
+        /// <returns></returns>
+        public bool IsUserLoggedIn()
+        {
+            var context = _httpContextAccessor.HttpContext;
+            return context.User.Identities.Any(x => x.IsAuthenticated);
         }
     }
 }

@@ -23,8 +23,13 @@ namespace AliHotel.Domain.Models
         public DateTime DepartureDate { get; set; }
 
         /// <summary>
-        /// Rooms Id
+        /// Room type
         /// </summary>
-        public Guid RoomId { get; set; }
+        public string RoomTypeName { get; set; }
+
+        /// <summary>
+        /// Number of people who wants to settle
+        /// </summary>
+        public int PeopleCount { get; set; }
     }
 }

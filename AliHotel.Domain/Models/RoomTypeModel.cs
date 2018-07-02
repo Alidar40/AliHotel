@@ -13,11 +13,11 @@
         /// <summary>
         /// Base price (dollars per day)
         /// </summary>
-        public int Price { get; set; }
+        public decimal Price { get; set; }
 
         /// <summary>
         /// Price for each additional person
         /// </summary>
-        public int PricePerMen { get; set; }
+        public decimal PricePerMen { get; set; }
     }
 }

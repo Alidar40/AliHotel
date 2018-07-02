@@ -17,11 +17,18 @@ namespace AliHotel.Domain.Interfaces
         List<Order> Orders { get; }
 
         /// <summary>
+        /// Returns most appropriate room for order
+        /// </summary>
+        /// <param name="orderModel"></param>
+        /// <returns></returns>
+        Task<Room> FindRoom(OrderModel orderModel);
+
+        /// <summary>
         /// Add order to database
         /// </summary>
         /// <param name="orderModel"></param>
         /// <returns></returns>
-        Task<Guid> AddAsync(OrderModel orderModel);
+        Task<bool> AddAsync(OrderModel orderModel);
 
         /// <summary>
         /// Close order

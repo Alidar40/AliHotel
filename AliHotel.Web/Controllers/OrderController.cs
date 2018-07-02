@@ -79,7 +79,22 @@ namespace AliHotel.Web.Controllers
         [HttpPost]
         public async Task<object> AddOrder([FromBody]OrderModel model)
         {
-            return await _orderService.AddAsync(model);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if(user.IsRenter)
+            {
+                return "You can't have two orders simultaneously";
+            }
+
+            model.UserId = user.Id;
+            bool result = await _orderService.AddAsync(model);
+            if (result == true)
+            {
+                return "Your order have been added";
+            }
+            else
+            {
+                return "We have not found suitable room";
+            }
         }
 
         /// <summary>
@@ -106,6 +121,27 @@ namespace AliHotel.Web.Controllers
             }
             await _orderService.EditDepartureDay(orderId, newDepDate);
             return newDepDate;
+        }
+
+        /// <summary>
+        /// Pays off the order
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("PayOrder")]
+        public async Task<string> PayOrder()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            if(!user.IsRenter)
+            {
+                return "You have not active orders to close";
+            }
+
+            Order order = _orderService.Orders.First(o => o.IsClosed == false && o.UserId == user.Id);
+
+            var bill = await _orderService.PayOrder(order.Id);
+
+            return "Your bill: " + bill.ToString();
         }
     }
 }

@@ -31,22 +31,55 @@ namespace AliHotel.Domain.Services
             .ThenInclude(x => x.RoomType)
             .ToList();
 
+        public List<Room> Rooms => _context.Rooms
+            .Include(x => x.RoomType)
+            .ToList();
+
         /// <summary>
-        /// Add order to database
+        /// Returns most appropriate room for order
         /// </summary>
         /// <param name="orderModel"></param>
         /// <returns></returns>
-        public async Task<Guid> AddAsync(OrderModel orderModel)
+        public async Task<Room> FindRoom(OrderModel orderModel)
         {
             if (orderModel == null)
             {
                 throw new NullReferenceException("Reference to order is null");
             }
 
-            var resultOrder = new Order(orderModel.UserId, orderModel.RoomId, orderModel.ArrivalDate, orderModel.DepartureDate);
+            Room appropriateRoom = Rooms.FirstOrDefault(r => r.IsOccupied == false &&
+                        r.RoomType.Name == orderModel.RoomTypeName && 
+                        r.Capacity >= orderModel.PeopleCount);
+
+            return appropriateRoom;
+        }
+
+        /// <summary>
+        /// Add order to database
+        /// </summary>
+        /// <param name="orderModel"></param>
+        /// <returns></returns>
+        public async Task<bool> AddAsync(OrderModel orderModel)
+        {
+            Room room = await FindRoom(orderModel);
+
+            if(room == null)
+            {
+                return false;
+            }
+
+            //var resultOrder = new Order(orderModel.UserId, orderModel.RoomId, orderModel.ArrivalDate, orderModel.DepartureDate);
+            var resultOrder = new Order(orderModel.UserId, room.Id, orderModel.ArrivalDate, orderModel.DepartureDate, orderModel.PeopleCount);
             await _context.Orders.AddAsync(resultOrder);
+
+            var user = await _context.Users.SingleAsync(u => u.Id == orderModel.UserId);
+            user.IsRenter = true;
+
+            var roomToChange = await _context.Rooms.FirstAsync(r => r.Id == room.Id);
+            roomToChange.IsOccupied = true;
+
             await _context.SaveChangesAsync();
-            return resultOrder.Id;
+            return true;
         }
 
         /// <summary>
@@ -56,20 +89,22 @@ namespace AliHotel.Domain.Services
         /// <returns></returns>
         public async Task<decimal> PayOrder(Guid orderId)
         {
-            var resultList = await _context.Orders
-                .Include(x => x.User)
-                .Include(x => x.Room)
-                .ToListAsync();
-            var resultOrder = resultList.SingleOrDefault(x => x.Id == orderId);
+            var resultOrder = Orders.SingleOrDefault(x => x.Id == orderId);
             if (resultOrder == null)
             {
                 throw new NullReferenceException($"reference to order is null");
             }
 
-            decimal resultSum = (resultOrder.DepartureDate - resultOrder.ArrivalDate).Days * (resultOrder.Room.RoomType.Price + (resultOrder.Room.Capacity - 1) * resultOrder.Room.RoomType.PricePerMen);
-            _context.Orders.ToList().SingleOrDefault(x => x.Id == orderId).Bill = resultSum;
-            //resultOrder.IsClosed = true;
-            _context.Orders.ToList().SingleOrDefault(x => x.Id == orderId).IsClosed = true;
+            decimal resultSum = (resultOrder.DepartureDate - resultOrder.ArrivalDate).Days * (resultOrder.Room.RoomType.Price + (resultOrder.PeopleCount - 1) * resultOrder.Room.RoomType.PricePerMen);
+            Orders.SingleOrDefault(x => x.Id == orderId).Bill = resultSum;
+            Orders.SingleOrDefault(x => x.Id == orderId).IsClosed = true;
+
+            var user = await _context.Users.SingleAsync(u => u.Id == resultOrder.UserId);
+            user.IsRenter = false;
+
+            var roomToChange = await _context.Rooms.FirstAsync(r => r.Id == resultOrder.RoomId);
+            roomToChange.IsOccupied = false;
+
             await _context.SaveChangesAsync();
             return resultSum;
         }

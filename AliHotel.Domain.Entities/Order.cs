@@ -53,6 +53,11 @@ namespace AliHotel.Domain.Entities
         public decimal Bill { get; set; }
 
         /// <summary>
+        /// Number of people who wants to settle
+        /// </summary>
+        public int PeopleCount { get; set; }
+
+        /// <summary>
         /// Default constructor
         /// </summary>
         public Order()
@@ -66,14 +71,15 @@ namespace AliHotel.Domain.Entities
         /// <param name="roomId"></param>
         /// <param name="arrivalDate"></param>
         /// <param name="departureDate"></param>
-        public Order(Guid userId, Guid roomId, DateTime arrivalDate, DateTime departureDate)
+        public Order(Guid userId, Guid roomId, DateTime arrivalDate, DateTime departureDate, int peopleCount)
         {
             this.Id = Guid.NewGuid();
             this.UserId = userId;
             this.RoomId = roomId;
             this.ArrivalDate = arrivalDate;
             this.DepartureDate = departureDate;
-            this.IsClosed = true;
+            this.PeopleCount = peopleCount;
+            this.IsClosed = false;
             this.Bill = 0;
         }
     }

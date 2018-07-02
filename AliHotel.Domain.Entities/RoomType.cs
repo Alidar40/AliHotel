@@ -27,7 +27,7 @@ namespace AliHotel.Domain.Entities
         /// <summary>
         /// Price for each additional person
         /// </summary>
-        public int PricePerMen { get; set; }
+        public decimal PricePerMen { get; set; }
 
         /// <summary>
         /// Default RoomType constructor

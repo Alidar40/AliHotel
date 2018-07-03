@@ -79,21 +79,27 @@ namespace AliHotel.Web.Controllers
         [HttpPost]
         public async Task<object> AddOrder([FromBody]OrderModel model)
         {
+            if(model.ArrivalDate.ToUniversalTime() < DateTime.UtcNow || 
+               model.DepartureDate.ToUniversalTime() < model.ArrivalDate.ToUniversalTime().AddDays(1))
+            {
+                return BadRequest("Incorrect arrival or departure date." + '\n'//Environment.NewLine 
+                    + "Note: earliest arrival date is today and you must book room for at least one day.");
+            }
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if(user.IsRenter)
             {
-                return "You can't have two orders simultaneously";
+                return StatusCode(403, "You can't have two orders simultaneously");
             }
-
+            
             model.UserId = user.Id;
-            bool result = await _orderService.AddAsync(model);
-            if (result == true)
+            Order resultOrder = await _orderService.AddAsync(model);
+            if (resultOrder != null)
             {
-                return "Your order have been added";
+                return CreatedAtAction("AddOrder", resultOrder.Id);
             }
             else
             {
-                return "We have not found suitable room";
+                return NotFound("We have not found suitable room");
             }
         }
 
@@ -128,20 +134,20 @@ namespace AliHotel.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("PayOrder")]
-        public async Task<string> PayOrder()
+        public async Task<object> PayOrder()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             if(!user.IsRenter)
             {
-                return "You have not active orders to close";
+                return StatusCode(403, "You have not active orders to close");
             }
 
             Order order = _orderService.Orders.First(o => o.IsClosed == false && o.UserId == user.Id);
 
             var bill = await _orderService.PayOrder(order.Id);
 
-            return "Your bill: " + bill.ToString();
+            return Ok(bill.ToString());
         }
     }
 }

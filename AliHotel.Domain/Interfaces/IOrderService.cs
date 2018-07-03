@@ -28,7 +28,7 @@ namespace AliHotel.Domain.Interfaces
         /// </summary>
         /// <param name="orderModel"></param>
         /// <returns></returns>
-        Task<bool> AddAsync(OrderModel orderModel);
+        Task<Order> AddAsync(OrderModel orderModel);
 
         /// <summary>
         /// Close order

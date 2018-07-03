@@ -59,16 +59,15 @@ namespace AliHotel.Domain.Services
         /// </summary>
         /// <param name="orderModel"></param>
         /// <returns></returns>
-        public async Task<bool> AddAsync(OrderModel orderModel)
+        public async Task<Order> AddAsync(OrderModel orderModel)
         {
             Room room = await FindRoom(orderModel);
 
             if(room == null)
             {
-                return false;
+                return null;
             }
-
-            //var resultOrder = new Order(orderModel.UserId, orderModel.RoomId, orderModel.ArrivalDate, orderModel.DepartureDate);
+            
             var resultOrder = new Order(orderModel.UserId, room.Id, orderModel.ArrivalDate, orderModel.DepartureDate, orderModel.PeopleCount);
             await _context.Orders.AddAsync(resultOrder);
 
@@ -79,7 +78,7 @@ namespace AliHotel.Domain.Services
             roomToChange.IsOccupied = true;
 
             await _context.SaveChangesAsync();
-            return true;
+            return resultOrder;
         }
 
         /// <summary>

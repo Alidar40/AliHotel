@@ -39,7 +39,7 @@ namespace AliHotel.Web.Controllers
         public async Task<object> GetAllOrders()
         {
             var result = await _orderService.GetAsync();
-            return result.Select(x => x?.OrderView());
+            return Ok(result.Select(x => x?.OrderView()));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace AliHotel.Web.Controllers
         {
             var result = await _orderService.GetAsync();
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            return result.Where(x => x.User == user).Select(x => x?.OrderView());
+            return Ok(result.Where(x => x.User == user).Select(x => x?.OrderView()));
         }
 
         /// <summary>
@@ -66,9 +66,9 @@ namespace AliHotel.Web.Controllers
 
             if (!result.Any(x => x.User == user && x.IsClosed == false))
             {
-                return "You have not active order.";
+                return NotFound("You have not active orders.");
             }
-            return result.Where(x => x.User == user).Select(x => x?.OrderView());
+            return Ok(result.Where(x => x.User == user).Select(x => x?.OrderView()));
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace AliHotel.Web.Controllers
             if(model.ArrivalDate.ToUniversalTime() < DateTime.UtcNow || 
                model.DepartureDate.ToUniversalTime() < model.ArrivalDate.ToUniversalTime().AddDays(1))
             {
-                return BadRequest("Incorrect arrival or departure date." + '\n'//Environment.NewLine 
+                return BadRequest("Incorrect arrival or departure date." + Environment.NewLine 
                     + "Note: earliest arrival date is today and you must book room for at least one day.");
             }
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -106,27 +106,27 @@ namespace AliHotel.Web.Controllers
         /// <summary>
         /// Changes departure day
         /// </summary>
-        /// <param name="orderId"></param>
         /// <param name="newDepDate"></param>
         /// <returns></returns>
         [HttpPut("EditDepartureDay")]
-        public async Task<object> EditDepartureDay([FromQuery]Guid orderId, [FromBody]DateTime newDepDate)
+        public async Task<object> EditDepartureDay([FromBody]DateTime newDepDate)
         {
-            var r = Request;
-            var order = _orderService.FindByIdAsync(orderId);
+            if (newDepDate.ToUniversalTime() < DateTime.Today.ToUniversalTime())
+            {
+                return BadRequest("Incorrect new departure date.");
+            }
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            if (user.Id != order.Result.UserId)
+            if(!user.IsRenter)
             {
-                throw new UnauthorizedAccessException("You have not permissions to edit this order");
+                return StatusCode(403, "You have not active orders");
             }
 
-            if(order.Result.IsClosed)
-            {
-                throw new Exception("It is impossible to edit this order");
-            }
-            await _orderService.EditDepartureDay(orderId, newDepDate);
-            return newDepDate;
+            Order order = _orderService.Orders.First(o => o.IsClosed == false && o.UserId == user.Id);
+            
+            await _orderService.EditDepartureDay(order.Id, newDepDate);
+            return Ok(newDepDate);
         }
 
         /// <summary>

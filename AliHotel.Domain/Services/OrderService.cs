@@ -116,16 +116,11 @@ namespace AliHotel.Domain.Services
         /// <returns></returns>
         public async Task EditDepartureDay(Guid orderId, DateTime newDepDate)
         {
-            var resultList = await _context.Orders.ToListAsync();
-            var resultOrder = resultList.SingleOrDefault(x => x.Id == orderId);
+            //var resultList = await _context.Orders.ToListAsync();
+            var resultOrder = Orders.SingleOrDefault(x => x.Id == orderId);
             if (resultOrder == null)
             {
                 throw new NullReferenceException($"reference to order is null");
-            }
-
-            if ((resultOrder.DepartureDate - newDepDate).Days < 0)
-            {
-                throw new NullReferenceException($"New departure date is incorrect");
             }
 
             _context.Orders.ToList().SingleOrDefault(x => x.Id == orderId).DepartureDate = newDepDate;

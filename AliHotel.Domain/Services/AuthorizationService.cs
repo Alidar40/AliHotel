@@ -1,7 +1,9 @@
 ﻿using AliHotel.Domain.Entities;
 using AliHotel.Domain.Interfaces;
 using AliHotel.Domain.Models;
+using AliHotel.Domain.Utils;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,17 +15,30 @@ namespace AliHotel.Domain.Services
     /// <summary>
     /// Class for user authorization
     /// </summary>
-    public class AuthorizationService: IAuthorizationService
+    public class AuthorizationService : IAuthorizationService
     {
         private readonly IUserService _userService;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IMemoryCache _memoryCache;
 
-        public AuthorizationService(IUserService userService, IPasswordHasher<User> passwordHasher)
+        /// <summary>
+        /// AuthorizationService constructor
+        /// </summary>
+        /// <param name="userService"></param>
+        /// <param name="passwordHasher"></param>
+        /// <param name="memoryCache"></param>
+        public AuthorizationService(IUserService userService, IPasswordHasher<User> passwordHasher, IMemoryCache memoryCache)
         {
             _userService = userService;
             _passwordHasher = passwordHasher;
+            _memoryCache = memoryCache;
         }
 
+        /// <summary>
+        /// Authorizes user
+        /// </summary>
+        /// <param name="loginModel"></param>
+        /// <returns></returns>
         public async Task<User> AuthorizationAsync(LoginModel loginModel)
         {
             if (loginModel.Email == null)
@@ -39,12 +54,52 @@ namespace AliHotel.Domain.Services
             }
             var resultHash = _passwordHasher.HashPassword(resultUser, loginModel.Password);
 
-            if(resultHash != resultUser.PasswordHash)
+            if (resultHash != resultUser.PasswordHash)
             {
                 throw new ArgumentException("Incorrect password or e-mail");
             }
             return resultUser;
+        }
 
+        /// <summary>
+        /// Generates token for email confirmation
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<(Guid actionGuid, string code)> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            var codeToSend = Randomizer.GetRandNumbers(5);
+            var resultModel = new ConfirmEmailModel { UserId = user.Id, Code = codeToSend };
+            var actionGuid = Guid.NewGuid();
+            _memoryCache.Set(actionGuid, resultModel, new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(3)));
+
+            return (actionGuid, codeToSend);
+        }
+
+        /// <summary>
+        /// Confirms email
+        /// </summary>
+        /// <param name="actionGuid"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public async Task<Guid> ConfirmEmailAsync(Guid actionGuid, string code)
+        {
+            var resultModel = _memoryCache.Get<ConfirmEmailModel>(actionGuid);
+            if(resultModel == null)
+            {
+                throw new InvalidOperationException($"There is no operations with such an Id:{actionGuid}");
+            }
+            if(String.Compare(resultModel.Code, code, StringComparison.Ordinal) != 0)
+            {
+                throw new InvalidOperationException($"Confirmation code is incorrect.");
+            }
+
+            var resultActionGuid = Guid.NewGuid();
+
+            _memoryCache.Set(resultActionGuid, resultModel.UserId,
+                new MemoryCacheEntryOptions().SetAbsoluteExpiration(TimeSpan.FromMinutes(10)));
+
+            return await Task.FromResult(resultActionGuid);
         }
     }
 }

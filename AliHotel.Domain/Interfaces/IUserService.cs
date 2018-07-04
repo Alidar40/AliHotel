@@ -22,7 +22,14 @@ namespace AliHotel.Domain.Interfaces
         /// </summary>
         /// <param name="userModel">User's model for registering</param>
         /// <returns></returns>
-        Task<Guid> AddAsync(UserRegisterModel userModel);
+        Task<User> AddAsync(UserRegisterModel userModel);
+
+        /// <summary>
+        /// Confirms user's email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task ConfirmEmail(Guid userId);
 
         /// <summary>
         /// Change user by id

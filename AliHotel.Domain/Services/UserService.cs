@@ -40,7 +40,7 @@ namespace AliHotel.Domain.Services
         /// </summary>
         /// <param name="userModel"></param>
         /// <returns></returns>
-        public async Task<Guid> AddAsync(UserRegisterModel userModel)
+        public async Task<User> AddAsync(UserRegisterModel userModel)
         {
             if (userModel == null)
             {
@@ -54,7 +54,7 @@ namespace AliHotel.Domain.Services
             }
 
             var passwordSalt = Randomizer.GetRandString(10);
-            //Сначала пароль потом соль
+
             var passwordHash = _passwordHasher.HashPassword(null, userModel.Password + passwordSalt);
 
             var resultUser = new User(userModel.Name, userModel.Email, userModel.BirthDate, userModel.PhoneNumber, passwordSalt, passwordHash, RolesOptions.User);
@@ -62,7 +62,29 @@ namespace AliHotel.Domain.Services
             await _context.Users.AddAsync(resultUser);
             await _context.SaveChangesAsync();
 
-            return resultUser.Id;
+            return resultUser;
+        }
+
+        /// <summary>
+        /// Confirms user's email
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task ConfirmEmail(Guid userId)
+        {
+            if(userId == null)
+            {
+                throw new ArgumentException($"User's id is incorrect");
+            }
+
+            var resultUser = await _context.Users.SingleOrDefaultAsync(x => x.Id == userId);
+            if (resultUser == null)
+            {
+                throw new NullReferenceException($"There is no user with such id: {userId} !");
+            }
+
+            resultUser.EmailConfirmed = true;
+            await _context.SaveChangesAsync();
         }
 
         /// <summary>

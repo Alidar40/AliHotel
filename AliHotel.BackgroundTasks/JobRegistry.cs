@@ -9,7 +9,7 @@ namespace AliHotel.BackgroundTasks
     {
         public JobRegistry()
         {
-            Schedule<DeleteUnconfirmedEmailsJob>().ToRunOnceIn(5).Seconds();
+            //Schedule<DeleteUnconfirmedEmailsJob>().ToRunOnceIn(5).Seconds();
         }
     }
 }

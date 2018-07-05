@@ -21,9 +21,7 @@ namespace AliHotel.Domain.Entities
         /// </summary>
         [ForeignKey(nameof(RoomType))]
         public Guid RoomTypeId { get; set; }
-
-        public RoomType RoomType { get; set; }
-
+        
         /// <summary>
         /// Describes whether room is occupied or not (true means is occupied)
         /// </summary>
@@ -47,6 +45,8 @@ namespace AliHotel.Domain.Entities
         /// </summary>
         public List<Image> Images { get; set; }
         
+        public RoomType RoomType { get; set; }
+
         public Room()
         {
 

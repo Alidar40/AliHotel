@@ -24,6 +24,11 @@ namespace AliHotel.Web.Controllers
         private readonly IOrderService _orderService;
         private readonly UserManager<User> _userManager;
 
+        /// <summary>
+        /// OrderController constructor
+        /// </summary>
+        /// <param name="orderService"></param>
+        /// <param name="userManager"></param>
         public OrderController(IOrderService orderService, UserManager<User> userManager)
         {
             _orderService = orderService;
@@ -31,22 +36,10 @@ namespace AliHotel.Web.Controllers
         }
 
         /// <summary>
-        /// Returns all orders
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("AllOrders")]
-        [Authorize(Roles = "Admin")]
-        public async Task<object> GetAllOrders()
-        {
-            var result = await _orderService.GetAsync();
-            return Ok(result.Select(x => x?.OrderView()));
-        }
-
-        /// <summary>
         /// Returns all users orders
         /// </summary>
         /// <returns></returns>
-        [HttpGet("MyOrders")]
+        [HttpGet("History")]
         public async Task<object> GetAllUsersOrders()
         {
             var result = await _orderService.GetAsync();
@@ -58,7 +51,7 @@ namespace AliHotel.Web.Controllers
         /// Returns users current order
         /// </summary>
         /// <returns></returns>
-        [HttpGet("CurrentOrder")]
+        [HttpGet("Current")]
         public async Task<object> GetCurrentOrder()
         {
             var result = await _orderService.GetAsync();
@@ -76,7 +69,7 @@ namespace AliHotel.Web.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<object> AddOrder([FromBody]OrderModel model)
         {
             if(model.ArrivalDate.ToUniversalTime() < DateTime.UtcNow || 
@@ -108,7 +101,7 @@ namespace AliHotel.Web.Controllers
         /// </summary>
         /// <param name="newDepDate"></param>
         /// <returns></returns>
-        [HttpPut("EditDepartureDay")]
+        [HttpPut("DepartureDay")]
         public async Task<object> EditDepartureDay([FromBody]DateTime newDepDate)
         {
             if (newDepDate.ToUniversalTime() < DateTime.Today.ToUniversalTime())

@@ -20,16 +20,12 @@ namespace AliHotel.Domain.Entities
         /// </summary>
         [ForeignKey(nameof(Room))]
         public Guid RoomId { get; set; }
-
-        public Room Room { get; set; }
-
+        
         /// <summary>
         /// Users Id
         /// </summary>
         [ForeignKey(nameof(User))]
         public Guid UserId { get; set; }
-        
-        public User User { get; set; }
 
         /// <summary>
         /// Date when user settles in the hotel
@@ -56,6 +52,10 @@ namespace AliHotel.Domain.Entities
         /// Number of people who wants to settle
         /// </summary>
         public int PeopleCount { get; set; }
+        
+        public Room Room { get; set; }
+
+        public User User { get; set; }
 
         /// <summary>
         /// Default constructor

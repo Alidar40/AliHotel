@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using AliHotel.BackgroundTasks;
+using FluentScheduler;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Ninject;
 
 namespace AliHotel.Web
 {
@@ -14,6 +17,9 @@ namespace AliHotel.Web
     {
         public static void Main(string[] args)
         {
+            JobManager.JobFactory = new JobFactory(new StandardKernel(new BackgroundTasksNinjectModule()));
+            JobManager.Initialize(new JobRegistry());
+
             BuildWebHost(args).Run();
         }
 

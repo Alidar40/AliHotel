@@ -5,11 +5,11 @@ using System.Text;
 
 namespace AliHotel.BackgroundTasks
 {
-    class JobRegistry : Registry
+    public class JobRegistry : Registry
     {
         public JobRegistry()
         {
-            Schedule<DeleteUnconfirmedEmailsJob>().ToRunEvery(1).Days();
+            Schedule<DeleteUnconfirmedEmailsJob>().ToRunOnceIn(5).Seconds();
         }
     }
 }

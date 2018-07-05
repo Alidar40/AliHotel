@@ -33,6 +33,7 @@ namespace AliHotel.Tests
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IHashProvider, Md5HashService>();
             services.AddScoped<IPasswordHasher<User>, Md5PasswordHasher>();
+            services.AddScoped<IImageService, ImageService>();
 
             //Factories
             services.AddScoped<UserDataFactory>();

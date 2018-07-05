@@ -58,5 +58,13 @@ namespace AliHotel.Domain.Interfaces
         /// <param name="id"></param>
         /// <returns></returns>
         Task<User> FindByIdAsync(Guid id);
+
+        /// <summary>
+        /// Changes user's password (in case he forgot it)
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <param name="newPassword">New password</param>
+        /// <returns></returns>
+        Task ResetPassword(string email, string newPassword);
     }
 }

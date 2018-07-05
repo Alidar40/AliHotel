@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliHotel.Domain.Entities", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliHotel.Database", "AliHotel.Database\AliHotel.Database.csproj", "{7A30E8EB-C504-45BD-9E59-42668CCBB9C3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliHotel.Identity", "AliHotel.Identity\AliHotel.Identity.csproj", "{957462BC-6D6D-4C7E-94AD-07553AC8DEBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliHotel.Identity", "AliHotel.Identity\AliHotel.Identity.csproj", "{957462BC-6D6D-4C7E-94AD-07553AC8DEBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

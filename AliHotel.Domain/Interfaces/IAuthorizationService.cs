@@ -33,5 +33,34 @@ namespace AliHotel.Domain.Interfaces
         /// <param name="code"></param>
         /// <returns></returns>
         Task<Guid> ConfirmEmailAsync(Guid actionId, string code);
+
+        /// <summary>
+        /// Generates token for password reseting
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        Task<(Guid actionGuid, string code)> GenerateResetPasswordToken(string email);
+
+        /// <summary>
+        /// Confirms password reset link set to email and returns guid to password reset action
+        /// </summary>
+        /// <param name="actionGuid"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        Task<Guid> ConfirmPasswordResetCode(Guid actionGuid, string code);
+
+        /// <summary>
+        /// Resets password
+        /// </summary>
+        /// <param name="actionGuid"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        Task ResetPassword(Guid actionGuid, string newPassword);
+
+        /// <summary>
+        /// Deletes all users, who has unconfirmed emails
+        /// </summary>
+        /// <returns></returns>
+        Task DeleteUsersWithUncofirmedEmails();
     }
 }

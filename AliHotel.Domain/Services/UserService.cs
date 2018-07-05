@@ -172,5 +172,25 @@ namespace AliHotel.Domain.Services
             var context = _httpContextAccessor.HttpContext;
             return context.User.Identities.Any(x => x.IsAuthenticated);
         }
+
+        /// <summary>
+        /// Changes user's password (in case he forgot it)
+        /// </summary>
+        /// <param name="email">User's email</param>
+        /// <param name="newPassword">New password</param>
+        /// <returns></returns>
+        public async Task ResetPassword(string email, string newPassword)
+        {
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == email);
+            if(user == null)
+            {
+                throw new NullReferenceException($"There is no user with such an email: {email}");
+            }
+
+            var resultPasswordHash = _passwordHasher.HashPassword(user, newPassword);
+            user.PasswordHash = resultPasswordHash;
+
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -6,6 +6,7 @@ using AliHotel.Domain.Entities;
 using AliHotel.Domain.Interfaces;
 using AliHotel.Domain.Models;
 using AliHotel.Domain.Services;
+using FluentScheduler;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -66,7 +67,7 @@ namespace AliHotel.Web.Controllers
 
             await _emailService.SendEmailAsync(model.Email, "Confirm your account",
                 $"Confirm registration by following this link: <a href='{callbackUrl}'>link</a>");
-            
+      
             return "Check your email for confirmation";
         }
 
@@ -119,6 +120,65 @@ namespace AliHotel.Web.Controllers
         {
             await _signInManager.SignOutAsync();
             return "Logged off successfully";
+        }
+
+        /// <summary>
+        /// Sends email with link to password reset page
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpPost("SendEmailToResetPassword")]
+        public async Task<object> SendEmailToResetPassword([FromBody] string email)
+        {
+            if (email == null || email == String.Empty)// check that email is actually an email - ???
+            {
+                return BadRequest();
+            }
+            
+            var token = await _authorizatioService.GenerateResetPasswordToken(email);
+            var callbackUrl = Url.Action(
+                "ConfirmPasswordResetCode",
+                "Account",
+                new { actionGuid = token.actionGuid, code = token.code },
+                protocol: HttpContext.Request.Scheme);
+
+            await _emailService.SendEmailAsync(email, "Reset password",
+                $"To reset password follow this link: <a href='{callbackUrl}'>link</a>");
+
+            return "Check your email for confirmation";
+        }
+
+        /// <summary>
+        /// Returns Guid to password reset action
+        /// </summary>
+        /// <param name="actionGuid"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        [HttpGet("ConfirmResetPasswordCode")]
+        public async Task<object> ConfirmPasswordResetCode(Guid actionGuid, string code)
+        {
+            var newActionGuid = await _authorizatioService.ConfirmPasswordResetCode(actionGuid, code);
+            //return RedirectToAction("ResetPassword", newActionGuid);
+            return newActionGuid.ToString();
+        }
+
+        /// <summary>
+        /// Resets password
+        /// </summary>
+        /// <param name="actionGuid"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        [HttpPost("ResetPassword/{actionGuid}")]
+        public async Task<object> ResetPassword(Guid actionGuid, [FromBody]string newPassword)
+        {
+            if (actionGuid == null)
+            {
+                return BadRequest();//RedirectToAction(nameof(HomeController.Index), "Home");
+            }
+
+            await _authorizatioService.ResetPassword(actionGuid, newPassword);
+
+            return Ok("Password was reset successfully");
         }
     }
 }

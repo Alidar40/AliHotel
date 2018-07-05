@@ -110,11 +110,12 @@ namespace AliHotel.Domain.Entities
         /// <param name="passwordSalt">Salt for password</param>
         /// <param name="passworhHash">Password hash</param>
         /// <param name="role">Role</param>
-        public User(string name, string email, DateTime birthDate, string phoneNumber, string passwordSalt, string passworhHash, RolesOptions role)
+        public User(string name, string email, DateTime birthDate, string creditCard, string phoneNumber, string passwordSalt, string passworhHash, RolesOptions role)
         {
             Name = name;
             Email = email;
             BirthDate = birthDate;
+            CreditCard = creditCard;
             PhoneNumber = phoneNumber;
             PasswordSalt = passwordSalt;
             PasswordHash = passworhHash;

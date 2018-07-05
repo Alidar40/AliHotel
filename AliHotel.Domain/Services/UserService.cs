@@ -47,6 +47,16 @@ namespace AliHotel.Domain.Services
                 throw new NullReferenceException("userModel == null");
             }
 
+            if(userModel.Name == String.Empty || userModel.Name == null ||
+                userModel.Email == String.Empty || userModel.Email == null ||
+                userModel.BirthDate == null ||
+                userModel.CreditCard == String.Empty || userModel.CreditCard == null ||
+                userModel.PhoneNumber == String.Empty || userModel.PhoneNumber == null ||
+                userModel.Password == String.Empty || userModel.Password == null)
+            {
+                throw new NullReferenceException("user is empty or some fields are missing");
+            }
+
             var checkOnEmail = await _context.Users.AnyAsync(x => x.Email == userModel.Email);
             if (checkOnEmail)
             {
@@ -57,7 +67,7 @@ namespace AliHotel.Domain.Services
 
             var passwordHash = _passwordHasher.HashPassword(null, userModel.Password + passwordSalt);
 
-            var resultUser = new User(userModel.Name, userModel.Email, userModel.BirthDate, userModel.PhoneNumber, passwordSalt, passwordHash, RolesOptions.User);
+            var resultUser = new User(userModel.Name, userModel.Email, userModel.BirthDate, userModel.CreditCard, userModel.PhoneNumber, passwordSalt, passwordHash, RolesOptions.User);
 
             await _context.Users.AddAsync(resultUser);
             await _context.SaveChangesAsync();

@@ -3,6 +3,7 @@ using AliHotel.Domain.Entities;
 using AliHotel.Domain.Interfaces;
 using AliHotel.Domain.Services;
 using AliHotel.Identity;
+using AliHotel.Tests.Factories;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +23,7 @@ namespace AliHotel.Tests
             var services = new ServiceCollection();
 
             //Database 
-            services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase());
+            services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("AliHotelDb"));
 
             services.AddMemoryCache();
 
@@ -32,7 +33,10 @@ namespace AliHotel.Tests
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IHashProvider, Md5HashService>();
             services.AddScoped<IPasswordHasher<User>, Md5PasswordHasher>();
-            
+
+            //Factories
+            services.AddScoped<UserDataFactory>();
+
             Provider = services.BuildServiceProvider();
         }
 

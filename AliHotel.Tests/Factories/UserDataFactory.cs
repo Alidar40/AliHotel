@@ -34,8 +34,8 @@ namespace AliHotel.Tests.Factories
             //При создание пароля, сначала пароль, потом соль
             var userList = new List<User>
             {
-                new User("admin", "admin", DateTime.Parse("01.01.1970"),"88005553555", "qwert", "admin", RolesOptions.Admin),
-                new User("testUser2", "testEmail2", DateTime.Parse("01.01.1970"),"88005553555", "asd","user" , RolesOptions.User),
+                new User("admin", "admin", DateTime.Parse("01.01.1970"), "1111 2222 3333 4444","88005553555", "qwert", "admin", RolesOptions.Admin),
+                new User("testUser2", "testEmail2", DateTime.Parse("01.01.1970"), "1111 2222 3333 4444","88005553555", "asd","user" , RolesOptions.User),
             };
             await _context.Users.AddRangeAsync(userList);
             await _context.SaveChangesAsync();

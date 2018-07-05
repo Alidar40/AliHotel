@@ -56,9 +56,9 @@ namespace AliHotel.Tests.Tests
         /// </summary>
         /// <returns></returns>
         [Test]
-        public async Task CreteUser_Success()
+        public async Task CreateUser_Success()
         {
-            var user = new UserRegisterModel();
+            var user = new UserRegisterModel()
             {
                 Name = "TestUser",
                 Email = "Email",
@@ -76,6 +76,29 @@ namespace AliHotel.Tests.Tests
             Assert.AreEqual(user.BirthDate, userToCompare.BirthDate);
             Assert.AreEqual(user.CreditCard, userToCompare.CreditCard);
             Assert.AreEqual(user.PhoneNumber, userToCompare.PhoneNumber);
+        }
+
+        /// <summary>
+        /// Passes null to user creation method
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task CreateUser_NullRef()
+        {
+            var ex = Assert.ThrowsAsync<NullReferenceException>(async () => await _userService.AddAsync(null));
+            Assert.That(ex.Message, Is.EqualTo("userModel == null"));
+        }
+        
+        /// <summary>
+        /// Passes user with fields equal empty to creation method
+        /// </summary>
+        /// <returns></returns>
+        [Test]
+        public async Task CreateUser_EmptyUser()
+        {
+            var user = new UserRegisterModel();
+            var ex = Assert.ThrowsAsync<NullReferenceException>(async () => await _userService.AddAsync(user));
+            Assert.That(ex.Message, Is.EqualTo("user is empty or some fields are missing"));
         }
     }
 }

@@ -83,6 +83,12 @@ namespace AliHotel.Domain.Entities
         public string CreditCard { get; set; }
 
         /// <summary>
+        /// When user was registered
+        /// </summary>
+        [DataType(DataType.Date)]
+        public DateTime RegistrationTime { get; set; } = DateTime.Now;
+
+        /// <summary>
         /// History of all bookings made by the user
         /// </summary>
         public List<Order> Orders { get; set; }

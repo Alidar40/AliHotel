@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AliHotel.BackgroundTasks\AliHotel.BackgroundTasks.csproj" />
     <ProjectReference Include="..\AliHotel.Database\AliHotel.Database.csproj" />
     <ProjectReference Include="..\AliHotel.Domain.Entities\AliHotel.Domain.Entities.csproj" />
     <ProjectReference Include="..\AliHotel.Domain\AliHotel.Domain.csproj" />

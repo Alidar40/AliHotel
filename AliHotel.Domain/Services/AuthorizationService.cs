@@ -170,11 +170,17 @@ namespace AliHotel.Domain.Services
         /// <returns></returns>
         public async Task DeleteUsersWithUncofirmedEmails()
         {
-            //var checkOnEmail = await _context.Users.AnyAsync(x => x.EmailConfirmed == false);
             var usersToDelete = await _context.Users.Where(u => u.EmailConfirmed == false).ToListAsync();
-
-            //_context.Users.RemoveRange(await _context.Users.Where(u => u.EmailConfirmed == false).ToListAsync());
             _context.Users.RemoveRange(usersToDelete);
+
+            foreach (var user in usersToDelete)
+            {
+                if((user.RegistrationTime - DateTime.UtcNow).Seconds > 30)
+                {
+                    _context.Remove(user);
+                }
+            }
+
             _context.SaveChanges();
         }
     }

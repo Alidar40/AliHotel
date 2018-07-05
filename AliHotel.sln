@@ -13,9 +13,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliHotel.Database", "AliHot
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliHotel.Identity", "AliHotel.Identity\AliHotel.Identity.csproj", "{957462BC-6D6D-4C7E-94AD-07553AC8DEBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliHotel.BackgroundTasks", "AliHotel.BackgroundTasks\AliHotel.BackgroundTasks.csproj", "{39AFF279-AD32-45A4-85B0-34AC49500B35}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AliHotel.BackgroundTasks", "AliHotel.BackgroundTasks\AliHotel.BackgroundTasks.csproj", "{39AFF279-AD32-45A4-85B0-34AC49500B35}"
 	ProjectSection(ProjectDependencies) = postProject
 		{8A95C0B9-241E-4474-8048-15FA96225E49} = {8A95C0B9-241E-4474-8048-15FA96225E49}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AliHotel.Tests", "AliHotel.Tests\AliHotel.Tests.csproj", "{53FB3441-C59C-4433-98A6-D94EF4E8BA39}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8A95C0B9-241E-4474-8048-15FA96225E49} = {8A95C0B9-241E-4474-8048-15FA96225E49}
+		{8EECC3E5-B04F-4BB7-9B6D-E1C4BB8F5B3C} = {8EECC3E5-B04F-4BB7-9B6D-E1C4BB8F5B3C}
+		{4D4CE8ED-B48F-4650-9043-B63A3AE0D07D} = {4D4CE8ED-B48F-4650-9043-B63A3AE0D07D}
 	EndProjectSection
 EndProject
 Global
@@ -48,6 +55,10 @@ Global
 		{39AFF279-AD32-45A4-85B0-34AC49500B35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39AFF279-AD32-45A4-85B0-34AC49500B35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39AFF279-AD32-45A4-85B0-34AC49500B35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53FB3441-C59C-4433-98A6-D94EF4E8BA39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53FB3441-C59C-4433-98A6-D94EF4E8BA39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53FB3441-C59C-4433-98A6-D94EF4E8BA39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53FB3441-C59C-4433-98A6-D94EF4E8BA39}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

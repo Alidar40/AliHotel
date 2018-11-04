@@ -14,6 +14,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AliHotel.Identity;
+using React.AspNet;
 
 namespace AliHotel.Web
 {
@@ -28,10 +29,11 @@ namespace AliHotel.Web
         private IServiceProvider ServiceProvider;
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddReact();
 
             //Add database context
             services.AddDbContext<DatabaseContext>(x =>
@@ -85,6 +87,7 @@ namespace AliHotel.Web
             services.AddDomainServices();
 
             ServiceProvider = services.BuildServiceProvider();
+            return ServiceProvider;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,15 +106,22 @@ namespace AliHotel.Web
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "AliHotel API V1");
             });
 
-            app.UseMvc();
+            app.UseReact(config => { });
+
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
 
             ServiceProvider.GetService<DatabaseContext>().Database.Migrate();
             ServiceProvider.GetService<DatabaseContext>().Initialize(ServiceProvider).Wait();
 
-            app.Run(async (context) =>
+            /*app.Run(async (context) =>
             {
                 await context.Response.WriteAsync("Hello World!");
-            });
+            });*/
         }
     }
 }

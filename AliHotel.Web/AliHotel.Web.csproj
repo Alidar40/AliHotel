@@ -13,6 +13,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\bootstrap\bootstrap.min.css" />
+    <None Include="wwwroot\bootstrap\bootstrap.min.js" />
+    <None Include="wwwroot\css\minty.min.css" />
+    <None Include="wwwroot\js\index.jsx" />
+    <None Include="wwwroot\js\LogInModal.jsx" />
+    <None Include="wwwroot\js\Modal.jsx" />
+    <None Include="wwwroot\js\ModalConductor.jsx" />
+    <None Include="wwwroot\js\ModalWrapper.jsx" />
+    <None Include="wwwroot\js\navbar.jsx" />
+    <None Include="wwwroot\react\app.js" />
+    <None Include="wwwroot\react\dist\bundle.js" />
+    <None Include="wwwroot\react\webpack.config.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentScheduler" Version="5.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />

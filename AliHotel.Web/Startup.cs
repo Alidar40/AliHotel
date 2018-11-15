@@ -106,8 +106,9 @@ namespace AliHotel.Web
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "AliHotel API V1");
             });
 
+            app.UseStaticFiles();
             app.UseReact(config => { });
-
+            app.UseMvc();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

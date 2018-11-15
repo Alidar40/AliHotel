@@ -4,8 +4,27 @@
     @Html.Raw(ViewBag.HelmetTitle)
     <meta charset="utf-8" />
     @Html.Raw(ViewBag.ServerStyles)
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="~/bootstrap/bootstrap.min.css">
+    <script src="~/bootstrap/bootstrap.min.js"></script>
+
+    <!-- Custom themes-->
+    <link rel="stylesheet" href="~/css/minty.min.css">
+    @RenderSection("head", required: false)
 </head>
 <body>
-    @RenderBody()
+    <div id="navbar"></div>
+
+
+    <div class="container body-content">
+        @RenderBody()
+
+        <div id="footer"></div>
+    </div>
+
+
+    
+    <script src="~/bootstrap/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>

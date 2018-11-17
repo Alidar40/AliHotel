@@ -1,9 +1,10 @@
 ﻿var React = require('react');
 
 var Modal = require('./modal');
+var Cookies = require('js-cookie');
 
 function UserGreeting(props) {
-    return <h5 className="nav-item mr-sm-2">Welcome back!</h5>;
+    return <h5 className="nav-item mr-sm-2">Hello, {props.name}!</h5>;
 }
 
 function GuestGreeting(props) {
@@ -11,11 +12,19 @@ function GuestGreeting(props) {
 }
 
 function Greeting(props) {
-    const isLoggedIn = props.isLoggedIn;
+    const isLoggedIn = props.isLoggedIn ;
     if (isLoggedIn) {
-        return <UserGreeting />;
+        return <UserGreeting name={props.name} />;
     }
     return <GuestGreeting />;
+}
+
+function LoginFailSpan(props) {
+    const isLoginRequestFailed = props.isLoginRequestFailed;
+    if (isLoginRequestFailed) {
+        return <label className="text-danger">Incorrect e-mail or password</label>;
+    }
+    return <div></div>;
 }
 
 function SignUpButton(props) {
@@ -40,9 +49,15 @@ class Navbar extends React.Component {
         this.handleLoginClick = this.handleLoginClick.bind(this);
         this.handleLogoutClick = this.handleLogoutClick.bind(this);
         this.toggleLogInModal = this.toggleLogInModal.bind(this);
+        this.handleEmailChange = this.handleEmailChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.state = {
             isLogInModalOpen: false,
-            isLoggedIn: false
+            isLoggedIn: false,
+            isLoginRequestFailed: false,
+            name: "",
+            email: "",
+            password: ""
         };
     }
 
@@ -50,11 +65,49 @@ class Navbar extends React.Component {
         this.setState({ isLogInModalOpen: !this.state.isLogInModalOpen });
     }
 
-    handleLoginClick() {
-        this.setState({ isLoggedIn: true, isLogInModalOpen:false });
+    handleEmailChange(event) {
+        this.setState({ email: event.target.value });
+    }
+
+    handlePasswordChange(event) {
+        this.setState({ password: event.target.value });
+    }
+
+    handleLoginClick(event) {
+        fetch('/Account/Login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: this.state.email,
+                password: this.state.password,
+            })
+        })
+        .then(response => {
+            if (response.status == 200) {
+                response.json().then(json => {
+                    this.setState({ name: json, isLoggedIn: true, isLogInModalOpen: false, isLoginRequestFailed: false });
+                });
+                return;
+            }
+            return error;
+        })
+        .catch(function (error) {
+            this.setState({ isLoginRequestFailed: true });
+        }.bind(this));
+        
+        event.preventDefault();
     }
 
     handleLogoutClick() {
+        fetch('/Account', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),
+            }
+        })
         this.setState({ isLoggedIn: false });
     }
 
@@ -68,6 +121,8 @@ class Navbar extends React.Component {
 
     render() {
         const isLoggedIn = this.state.isLoggedIn;
+        const isLoginRequestFailed = this.state.isLoginRequestFailed;
+        const name = this.state.name;
         let button1; //register or my orders
         let button2; //login or logout
 
@@ -101,7 +156,7 @@ class Navbar extends React.Component {
                                 </li>
                             </ul>
 
-                            <Greeting isLoggedIn={isLoggedIn} />
+                            <Greeting isLoggedIn={isLoggedIn} name={name} />
 
                             <div className="navbar-right">
                                 <ul className="nav navbar-nav navbar-right mr-auto">
@@ -121,24 +176,26 @@ class Navbar extends React.Component {
                     <Modal show={this.state.isLogInModalOpen}>
                         <div className="card-header">Logging in</div>
                         
-                        <form style={{padding: "20px"}}>
+                        <form onSubmit={this.handleLoginClick} style={{ padding: "20px" }}>
+                            <LoginFailSpan isLoginRequestFailed={isLoginRequestFailed} />
+                            
                             <div className="form-group">
                                 <label htmlFor="email">Email address</label>
-                                <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"></input>
+                                <input type="email" value={this.state.email} onChange={this.handleEmailChange} className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"></input>
                                     <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else.</small>
                             </div>
 
                             <div className="form-group">
                                 <label htmlFor="password">Password</label>
-                                <input type="password" className="form-control" id="password" placeholder="Password"></input>
+                                <input type="password" value={this.state.password} onChange={this.handlePasswordChange} className="form-control" id="password" placeholder="Password"></input>
                             </div>
 
                             <div style={{ display: "flex", flexDirection: "row" }}>
-                                <div style={{ padding: "5px", left: "50%" }}>
-                                    <button className="btn btn-primary" onClick={this.handleLoginClick}>Log in</button>
+                                <div  style={{ padding: "5px", left: "50%" }}>
+                                    <input className="btn btn-primary" type="submit" value="Log in"/>
                                 </div>
                                 <div style={{ padding: "5px" }}>
-                                    <button className="btn btn-primary" onClick={this.toggleLogInModal}>Cancel</button>
+                                    <input type="button" className="btn btn-primary" onClick={this.toggleLogInModal} readOnly value="Cancel" />
                                 </div>
                             </div>
                         </form>

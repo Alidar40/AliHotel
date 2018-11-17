@@ -105,9 +105,9 @@ namespace AliHotel.Web.Controllers
             if (resultUser != null)
             {
                 await _signInManager.SignInAsync(resultUser, false);
-                return "Authorized successfully";
+                return Ok(resultUser.Name);
             }
-            return "Authorization failed!";
+            return BadRequest("Incorrect email or password");
         }
 
         /// <summary>

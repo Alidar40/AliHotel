@@ -1,27 +1,12 @@
 ﻿import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
-import Navbar from './navbar';
-import Home from './home';
-import MyOrders from './myorders';
-
-const initialState = {
-    isLoggedIn: false,
-    name: ""
-}
-
-function hotelStore(state, action) {
-    if (typeof state === 'undefined') {
-        return initialState
-    }
-
-    return state
-}
-
-const store = createStore(hotelStore)
+import Navbar from './components/navbar';
+import Home from './components/home';
+import MyOrders from './components/myorders';
+import store from './reducers/hotel-store';
 
 ReactDOM.render(
     <Provider store={store}>

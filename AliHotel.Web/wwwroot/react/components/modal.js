@@ -1,4 +1,4 @@
-﻿var React = require('react');
+﻿import React from 'react';
 
 const Modal = ({ show, children }) => {
     const showHideClassName = show ? 'modal display-block' : 'modal display-none';
@@ -12,4 +12,4 @@ const Modal = ({ show, children }) => {
     );
 };
 
-module.exports = Modal;
+export default Modal;

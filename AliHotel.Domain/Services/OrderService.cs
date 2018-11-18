@@ -136,6 +136,7 @@ namespace AliHotel.Domain.Services
             return await _context.Orders
                 .Include(x => x.User)
                 .Include(x => x.Room)
+                .ThenInclude(x => x.RoomType)
                 .ToListAsync();
         }
 

@@ -1,7 +1,8 @@
-﻿var React = require('react');
+﻿import React from 'react';
 
-var Modal = require('./modal');
-var Cookies = require('js-cookie');
+import Modal from './modal';
+import Cookies from 'js-cookie';
+import { NavLink } from "react-router-dom";
 
 function UserGreeting(props) {
     return <h5 className="nav-item mr-sm-2">Hello, {props.name}!</h5>;
@@ -40,7 +41,7 @@ function LogoutButton(props) {
 }
 
 function MyOrdersButton(props) {
-    return (<button className="btn btn-secondary my-2 my-sm-0" onClick={props.onClick}> My Orders</button>);
+    return (<button className="btn btn-secondary my-2 my-sm-0"><NavLink to="/MyOrders" exact style={{ color: "white", "textDecoration": "none" }}>My Orders</NavLink></button>);
 }
 
 class Navbar extends React.Component {
@@ -111,10 +112,6 @@ class Navbar extends React.Component {
         this.setState({ isLoggedIn: false });
     }
 
-    handleMyOrdersClick() {
-        //TODO
-    }
-
     handleSignUpClick() {
         //TODO
     }
@@ -127,11 +124,11 @@ class Navbar extends React.Component {
         let button2; //login or logout
 
         if (isLoggedIn) {
-            button1 = <MyOrdersButton onClick={this.handleMyOrdersClick} />;
+            button1 = <MyOrdersButton/>;
             button2 = <LogoutButton onClick={this.handleLogoutClick} />;
         } else {
             button1 = <LoginButton onClick={this.toggleLogInModal} />;
-            button2 = <SignUpButton onClick={this.handleSignUpClick}/>;
+            button2 = <SignUpButton onClick={this.handleSignUpClick} />;
         }
 
         return (
@@ -209,4 +206,4 @@ class Navbar extends React.Component {
     }
 }
 
-module.exports = Navbar;
+export default Navbar;

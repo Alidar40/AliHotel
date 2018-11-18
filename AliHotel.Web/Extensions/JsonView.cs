@@ -22,6 +22,9 @@ namespace AliHotel.Web.Extensions
                     obj.ArrivalDate,
                     obj.DepartureDate,
                     obj.RoomId,
+                    obj.Room,
+                    obj.Room.Number,
+                    obj.Room.RoomType.Name,
                     obj.UserId,
                     obj.IsClosed
                 };

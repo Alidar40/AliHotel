@@ -44,7 +44,7 @@ namespace AliHotel.Web.Controllers
         {
             var result = await _orderService.GetAsync();
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            return Ok(result.Where(x => x.User == user).Select(x => x?.OrderView()));
+            return Ok(result.Where(x => x.User == user).Where(x => x.IsClosed == true).Select(x => x?.OrderView()));
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace AliHotel.Web.Controllers
             {
                 return NotFound("You have not active orders.");
             }
-            return Ok(result.Where(x => x.User == user).Select(x => x?.OrderView()));
+            return Ok(result.Where(x => x.User == user).Where(x => x.IsClosed == false).Select(x => x?.OrderView()));
         }
 
         /// <summary>

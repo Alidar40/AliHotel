@@ -2,6 +2,8 @@
 import Cookies from 'js-cookie';
 import { TacoTable, DataType, SortDirection, Formatters, Summarizers, TdClassNames } from 'react-taco-table';
 
+import { formatJsonDateToUTC } from '../utils/date';
+
 class OrdersHistory extends React.Component {
     constructor(props) {
         super(props);
@@ -85,24 +87,8 @@ class OrdersHistory extends React.Component {
                     header: 'Bill',
                 }];
 
-            const dateFormat1 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
-            const dateFormat2 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}$/;
-            const dateFormat3 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{2}Z$/;
-            const dateFormat4 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
-            const dateFormat5 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-
-            function reviver(key, value) {
-                if (typeof value === "string" && (dateFormat1.test(value) || dateFormat2.test(value) || dateFormat3.test(value) || dateFormat4.test(value) || dateFormat5.test(value))) {
-                    var date = new Date(value);
-
-                    return date.toString().substring(0, 15);
-                }
-
-                return value;
-            }
-
             return <div className="container body-content">
-                {this.OrdersHistory(JSON.parse(JSON.stringify(this.state.ordersHistory), reviver), columns)}
+                {this.OrdersHistory(formatJsonDateToUTC(this.state.ordersHistory), columns)}
             </div>
         } else {
             return <div className="container body-content"><br /><h3>Loading content</h3></div>

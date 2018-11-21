@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 import 'react-taco-table/dist/react-taco-table.css';
 
 import Modal from './modal';
+import { formatJsonDateToUTC } from '../utils/date';
 
 Date.prototype.toISOString = function () {
     var tzo = -this.getTimezoneOffset(),
@@ -163,7 +164,6 @@ class CurrentOrder extends React.Component {
 
     CurrentOrderForm(current) {
         if (current === "NO_ACTIVE_ORDERS") {
-            //TODO
             return <div>
                 <h2>You have not active orders</h2>
                 <br />
@@ -301,22 +301,6 @@ class CurrentOrder extends React.Component {
 
     render() {
         if (this.state.currentFetched) {
-            const dateFormat1 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/;
-            const dateFormat2 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}$/;
-            const dateFormat3 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{2}Z$/;
-            const dateFormat4 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
-            const dateFormat5 = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/;
-
-            function reviver(key, value) {
-                if (typeof value === "string" && (dateFormat1.test(value) || dateFormat2.test(value) || dateFormat3.test(value) || dateFormat4.test(value) || dateFormat5.test(value))) {
-                    var date = new Date(value);
-
-                    return date.toString().substring(0, 15);
-                }
-
-                return value;
-            }
-
             let modal;
 
             if (this.state.isCloseOrderModalRequested) {
@@ -335,7 +319,7 @@ class CurrentOrder extends React.Component {
                     </Modal>
                 </main>
 
-                {this.CurrentOrderForm(JSON.parse(JSON.stringify(this.state.current), reviver))}
+                {this.CurrentOrderForm(formatJsonDateToUTC(this.state.current))}
                 
             </div>
         } else {

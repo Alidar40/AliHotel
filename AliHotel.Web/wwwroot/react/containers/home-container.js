@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 
 import Login from '../components/login';
 import CurrentOrder from '../components/current-order';
+import CreateOrder from '../components/create-order';
 import { handleLogin } from '../store/actions/authentication-actions';
 
 class HomeContainer extends React.Component {
@@ -13,17 +14,22 @@ class HomeContainer extends React.Component {
         let greeting;
 
         if (this.props.user.isLoggedIn) {
-            greeting = <CurrentOrder />;
+            if (this.props.user.haveCurrentOrder) {
+                greeting = <CurrentOrder />
+            } else {
+                greeting = <CreateOrder />
+            }
+
         } else {
             greeting = <Login isLoginRequestFailed={this.props.user.isLoginRequestFailed}
-                error={this.props.user.error}
-                user={this.props.user}
-                dispatch={this.props.dispatch}
-                handleLogin={handleLogin} />;
+                        error={this.props.user.error}
+                        user={this.props.user}
+                        dispatch={this.props.dispatch}
+                        handleLogin={handleLogin} />
         }
         
         return (
-            <div className="container jumbotron form-group" style={{ display: "flex", "flexDirection": "row", background: "white" }}>
+            <div>
                 {greeting}
             </div>
         )

@@ -21,10 +21,6 @@ class Login extends React.Component {
         };
     }
 
-    componentWillUnmount() {
-        //this.setState({ password: "" });
-    }
-
     handleEmailChange(event) {
         console.log(this.state.email)
         this.setState({ email: event.target.value });
@@ -35,39 +31,22 @@ class Login extends React.Component {
     }
 
     handleLoginClick(event) {
-        /*fetch('/Account/Login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                email: this.state.email,
-                password: this.state.password,
-            })
-        })
-            .then(response => {
-                if (response.status == 200) {
-                    response.json().then(json => {
-                        this.setState({ name: json, isLoggedIn: true, isLogInModalOpen: false, isLoginRequestFailed: false });
-                    });
-                    return;
-                }
-                return error;
-            })
-            .catch(function (error) {
-                this.setState({ isLoginRequestFailed: true });
-            }.bind(this));*/
-        //console.log(this.state);
-        //handleLogin(this.state.email, this.state.password);
         const { dispatch } = this.props;
         event.preventDefault();
         dispatch(this.props.handleLogin(this.state.email, this.state.password));
-
     }
 
+    handleRegisterClick(event) {
+        //TODO
+    }
 
     render() {
-        return <form onSubmit={this.handleLoginClick} style={{ padding: "20px" }}>
+        return <div className="container jumbotron form-group" style={{ display: "flex", "flexDirection": "row", background: "white" }}>
+            <div className="container form-group" style={{ position: "relative", "marginTop": "10%" }}>
+                <h1 >Welcome to AliHotel!</h1>
+            </div>
+            <div className="container jumbotron form-group" style={{ "marginLeft": "10%", "maxWidth": "50%" }}>
+                <form onSubmit={this.handleLoginClick} style={{ padding: "20px" }}>
                     <LoginFailSpan isLoginRequestFailed={this.props.isLoginRequestFailed} />
 
                     <div className="form-group">
@@ -80,11 +59,14 @@ class Login extends React.Component {
                         <label htmlFor="password">Password</label>
                         <input type="password" value={this.state.password} onChange={this.handlePasswordChange} className="form-control" id="password" placeholder="Password"></input>
                     </div>
-            
-                    <div style={{ padding: "5px", width: "100%" }}>
-                        <input className="btn btn-primary" type="submit" value="Log in" />
-                    </div>
+
+                    <input style={{ width: "100%" }} className="btn btn-primary " type="submit" value="Log in" />
+                    <hr />
+                    <small className="form-text text-muted">Don't have an account? So create!</small>
+                    <input onClick={this.handleRegisterClick} type="button" style={{ width: "100%" }} className="btn btn-primary btn-sm" value="Register" />
                 </form>
+            </div>
+        </div>
     }
 }
 

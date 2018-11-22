@@ -1,6 +1,6 @@
 ﻿module.exports = {
     context: __dirname,
-    entry: "./app.js",
+    entry: "./index.js",
     mode: "development",
     output: {
         path: __dirname + "/dist",

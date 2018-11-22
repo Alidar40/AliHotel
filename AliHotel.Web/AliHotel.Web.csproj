@@ -18,7 +18,7 @@
     <None Include="wwwroot\css\minty.min.css" />
     <None Include="wwwroot\js\index.jsx" />
     <None Include="wwwroot\js\navbar.jsx" />
-    <None Include="wwwroot\react\containers\app.js" />
+    <None Include="wwwroot\react\app.js" />
     <None Include="wwwroot\react\dist\bundle.js" />
     <None Include="wwwroot\react\webpack.config.js" />
   </ItemGroup>

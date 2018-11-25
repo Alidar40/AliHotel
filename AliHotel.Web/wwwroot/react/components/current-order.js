@@ -38,42 +38,16 @@ class CurrentOrder extends React.Component {
         this.handleChangeDepDateClick = this.handleChangeDepDateClick.bind(this);
         this.handleNewDepartureDayPick = this.handleNewDepartureDayPick.bind(this);
         this.state = {
-            current: null,
-            currentFetched: false,
-            currentDepartureDate: "",
             isModalOpen: false,
             isChangeDateModalRequested: false,
             isCloseOrderModalRequested: false,
             isClosingConfirmed: false,
             orderClosedResponse: "",
-            newDepartureDate: (new Date()).setHours(0, 0, 0, 0),
+            newDepartureDate: new Date((new Date()).setHours(0, 0, 0, 0)),
             isChangingDepDateRequested: false,
             isDepDateChangedWithoutErrors: false,
             changeDepDateResponse: ""
         }
-
-        fetch('/Orders/Current', {
-            method: 'GET',
-            headers: {
-                'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),
-            }
-        })
-            .then(response => {
-                if (response.status == 404) {
-                    this.setState({ current: "NO_ACTIVE_ORDERS", currentFetched: true });
-                } else {
-                    response.json().then(data => {
-                        delete data['id'];
-                        delete data.userId;
-                        delete data.room;
-                        delete data.roomId;
-                        this.setState({ current: data, currentDepartureDate: data["0"].departureDate, currentFetched: true });
-                    })
-                }
-            })
-            .catch(error => {
-                console.log(error);
-            })
     }
 
     componentWillUnmount() {
@@ -118,7 +92,11 @@ class CurrentOrder extends React.Component {
     }
 
     handleCloseOrderFinishedClick() {
-        this.setState({ isModalOpen: false, orderClosedResponse: "", isClosingConfirmed: false, isCloseOrderModalRequested: false, current: "NO_ACTIVE_ORDERS" });
+        //TODO
+        this.props.user.currentOrder = "NO_ACTIVE_ORDER";
+        this.props.user.haveCurrentOrder = false;
+        this.setState({ isModalOpen: false, orderClosedResponse: "", isClosingConfirmed: false, isCloseOrderModalRequested: false });
+        this.forceUpdate();
     }
 
     handleOpenChangeDepDateModal() {
@@ -136,11 +114,8 @@ class CurrentOrder extends React.Component {
         })
             .then(response => {
                 if (response.status == 200) {
-                    console.log(this.state.newDepartureDate.toISOString());
-                    console.log(this.state.newDepartureDate);
                     this.setState({ isChangingDepDateRequested: true, isDepDateChangedWithoutErrors: true });
                 } else {
-                    console.log(this.state.newDepartureDate.toISOString());
                     this.setState({ isChangingDepDateRequested: true, isDepDateChangedWithoutErrors: false })
                 }
                 return response.json();
@@ -154,7 +129,7 @@ class CurrentOrder extends React.Component {
     }
 
     handleNewDepartureDayPick(date) {
-        this.setState({ newDepartureDate: date })
+        this.setState({ newDepartureDate: new Date(date) })
     }
 
     handleChangeDepDateFinal() {
@@ -162,8 +137,8 @@ class CurrentOrder extends React.Component {
         this.setState({})
     }
 
-    CurrentOrderForm(current) {
-        if (current === "NO_ACTIVE_ORDERS") {
+    CurrentOrderForm(currentOrderFormatted) {
+        if (this.props.user.haveCurrentOrder === false) {
             return <div>
                 <h2>You have not active orders</h2>
                 <br />
@@ -178,19 +153,19 @@ class CurrentOrder extends React.Component {
                 <ul className="list-group">
                     <li className="list-group-item d-flex justify-content-between align-items-center">
                         Arrival Date
-                                    <span className="badge badge-primary badge-pill">{current["0"].arrivalDate}</span>
+                                    <span className="badge badge-primary badge-pill">{currentOrderFormatted.arrivalDate}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center">
                         Departure Date
-                                    <span className="badge badge-primary badge-pill">{current["0"].departureDate}</span>
+                                    <span className="badge badge-primary badge-pill">{currentOrderFormatted.departureDate}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center">
                         Room Number
-                                    <span className="badge badge-primary badge-pill">{current[0].number}</span>
+                                    <span className="badge badge-primary badge-pill">{currentOrderFormatted.number}</span>
                     </li>
                     <li className="list-group-item d-flex justify-content-between align-items-center">
                         Room Type
-                                    <span className="badge badge-primary badge-pill">{current["0"].room.roomType.name}</span>
+                                    <span className="badge badge-primary badge-pill">{currentOrderFormatted.room.roomType.name}</span>
                     </li>
                 </ul>
 
@@ -239,7 +214,7 @@ class CurrentOrder extends React.Component {
     ChangeDepartureDayModal(isChangingDepDateRequested, isDepDateChangedWithoutErrors) {
         if (isChangingDepDateRequested) {
             if (isDepDateChangedWithoutErrors) {
-                this.state.current["0"].departureDate = this.state.changeDepDateResponse;
+                this.props.user.currentOrder["0"].departureDate = this.state.changeDepDateResponse;
                 let dateToPrint = new Date(Date.parse(this.state.changeDepDateResponse));
                 dateToPrint = dateToPrint.toString().substring(0, 16);
                 return <div style={{ "textAlign": "center", position: "relative" }}>
@@ -280,7 +255,7 @@ class CurrentOrder extends React.Component {
                         minDate={new Date()}
                         todayButton={"Today"}
                         showDisabledMonthNavigation
-                        highlightDates={[new Date(this.state.currentDepartureDate)]}
+                        highlightDates={[new Date(this.props.user.currentOrder["0"].departureDate)]}
                         placeholderText="Select new departure day"
                         className="form-control"
                     />
@@ -300,7 +275,7 @@ class CurrentOrder extends React.Component {
 
 
     render() {
-        if (this.state.currentFetched) {
+        if (!this.props.user.isFetchingCurrentOrder) {
             let modal;
 
             if (this.state.isCloseOrderModalRequested) {
@@ -319,7 +294,7 @@ class CurrentOrder extends React.Component {
                     </Modal>
                 </main>
 
-                {this.CurrentOrderForm(formatJsonDateToUTC(this.state.current))}
+                {this.CurrentOrderForm(formatJsonDateToUTC(this.props.user.currentOrder["0"]))}
                 
             </div>
         } else {

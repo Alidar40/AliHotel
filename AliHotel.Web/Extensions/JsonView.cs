@@ -26,6 +26,7 @@ namespace AliHotel.Web.Extensions
                     obj.Room.Number,
                     obj.Room.RoomType.Name,
                     obj.UserId,
+                    UserName = obj.User.Name,
                     obj.IsClosed
                 };
             }

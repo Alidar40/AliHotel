@@ -59,7 +59,7 @@ namespace AliHotel.Web.Controllers
 
             if (!result.Any(x => x.User == user && x.IsClosed == false))
             {
-                return NotFound("You have not active orders.");
+                return NotFound(new { userName= user.Name, error = "You have not active orders." });
             }
             return Ok(result.Where(x => x.User == user).Where(x => x.IsClosed == false).Select(x => x?.OrderView()));
         }

@@ -1,32 +1,60 @@
 ﻿import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
+import { withRouter } from 'react-router-dom'
 
-import Login from '../components/login';
+import Login from '../components/login'
 import CurrentOrder from '../components/current-order';
 import CreateOrder from '../components/create-order';
 import { handleLogin } from '../store/actions/authentication-actions';
+import { handleCurrentOrder } from '../store/actions/datafetch-actions';
 
 class HomeContainer extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
-        const { user } = this.props
+        const { user } = this.props;
 
         let greeting;
+        const loading = <div className="container body-content"><br /><h3>Loading</h3></div>
+        
+        if (this.props.location.pathname === "/Login") {
+            if (user.isLoggedIn) {
+                this.props.history.push("/");
+            }
 
-        if (this.props.user.isLoggedIn) {
-            if (this.props.user.haveCurrentOrder) {
-                greeting = <CurrentOrder />
+            greeting = <div>
+                <Login isLoginRequestFailed={this.props.user.isLoginRequestFailed}
+                    error={this.props.user.error}
+                    user={this.props.user}
+                    dispatch={this.props.dispatch}
+                    handleLogin={handleLogin} />
+            </div>
+        } 
+
+        if (this.props.location.pathname === "/") {
+            if (user.isFetchingCurrentOrder) {
+                return (loading)
+            }
+
+            if (!user.isLoggedIn) {
+                this.props.dispatch(handleCurrentOrder());
+                return (loading)
+            }
+
+            if (user.currentOrder === null) {
+                this.props.dispatch(handleCurrentOrder());
+                return (loading)
+            }
+
+            if (user.haveCurrentOrder) {
+                greeting = <CurrentOrder user={user} />
             } else {
                 greeting = <CreateOrder />
             }
-
-        } else {
-            greeting = <Login isLoginRequestFailed={this.props.user.isLoginRequestFailed}
-                        error={this.props.user.error}
-                        user={this.props.user}
-                        dispatch={this.props.dispatch}
-                        handleLogin={handleLogin} />
-        }
+        } 
         
         return (
             <div>
@@ -42,4 +70,4 @@ const mapStateToProps = store => {
     }
 }
 
-export default connect(mapStateToProps)(HomeContainer);
+export default withRouter(connect(mapStateToProps)(HomeContainer));

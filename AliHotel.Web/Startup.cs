@@ -77,6 +77,15 @@ namespace AliHotel.Web
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+
             //Add swagger for documenting API
             services.AddSwaggerGen(c =>
             {

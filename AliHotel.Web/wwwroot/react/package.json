@@ -10,6 +10,7 @@
   "author": "Alidar Asvarov",
   "license": "MIT",
   "dependencies": {
+    "history": "^4.7.2",
     "js-cookie": "^2.2.0",
     "react": "^16.6.3",
     "react-datepicker": "^2.0.0",

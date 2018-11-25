@@ -12,6 +12,11 @@ import { handleCurrentOrder } from '../store/actions/datafetch-actions';
 class HomeContainer extends React.Component {
     constructor(props) {
         super(props);
+        this.updateParent = this.updateParent.bind(this);
+    }
+
+    updateParent() {
+        this.forceUpdate();
     }
 
     render() {
@@ -50,9 +55,9 @@ class HomeContainer extends React.Component {
             }
 
             if (user.haveCurrentOrder) {
-                greeting = <CurrentOrder user={user} />
+                greeting = <CurrentOrder user={user} updateParent={this.updateParent}/>
             } else {
-                greeting = <CreateOrder />
+                greeting = <CreateOrder user={user} updateParent={this.updateParent} />
             }
         } 
         
@@ -70,4 +75,4 @@ const mapStateToProps = store => {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(HomeContainer));
+export default connect(mapStateToProps)(HomeContainer);

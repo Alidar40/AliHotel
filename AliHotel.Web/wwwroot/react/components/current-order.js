@@ -92,11 +92,10 @@ class CurrentOrder extends React.Component {
     }
 
     handleCloseOrderFinishedClick() {
-        //TODO
+        this.setState({ isModalOpen: false, orderClosedResponse: "", isClosingConfirmed: false, isCloseOrderModalRequested: false });
         this.props.user.currentOrder = "NO_ACTIVE_ORDER";
         this.props.user.haveCurrentOrder = false;
-        this.setState({ isModalOpen: false, orderClosedResponse: "", isClosingConfirmed: false, isCloseOrderModalRequested: false });
-        this.forceUpdate();
+        this.props.updateParent();
     }
 
     handleOpenChangeDepDateModal() {

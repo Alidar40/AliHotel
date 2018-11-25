@@ -35,7 +35,8 @@ class HomeContainer extends React.Component {
                     error={this.props.user.error}
                     user={this.props.user}
                     dispatch={this.props.dispatch}
-                    handleLogin={handleLogin} />
+                    handleLogin={handleLogin}
+                    history={this.props.history}/>
             </div>
         } 
 

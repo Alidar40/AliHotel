@@ -1,5 +1,4 @@
 ﻿import React from 'react';
-import { handleLogin } from '../store/actions/authentication-actions'
 
 function LoginFailSpan(props) {
     const isLoginRequestFailed = props.isLoginRequestFailed;
@@ -15,6 +14,7 @@ class Login extends React.Component {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleLoginClick = this.handleLoginClick.bind(this);
+        this.handleRegisterClick = this.handleRegisterClick.bind(this);
         this.state = {
             email: "",
             password: ""
@@ -36,7 +36,7 @@ class Login extends React.Component {
     }
 
     handleRegisterClick(event) {
-        //TODO
+        this.props.history.push("/Register")
     }
 
     render() {

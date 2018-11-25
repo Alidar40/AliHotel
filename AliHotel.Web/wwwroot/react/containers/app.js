@@ -6,7 +6,7 @@ import createHistory from 'history/createBrowserHistory'
 
 import NavbarContainer from './navbar-container';
 import HomeContainer from './home-container';
-import MyOrders from '../components/myorders';
+import MyOrdersContainer from './myorders-container';
 import store from '../store/hotel-store';
 import { handleLogin } from '../store/actions/authentication-actions'
 
@@ -24,7 +24,7 @@ class App extends React.Component {
                         <Switch>
                             <Route exact path="/" component={HomeContainer} />
                             <Route exact path="/Login" component={HomeContainer} />
-                            <Route exact path="/MyOrders" component={NavbarContainer} />
+                            <Route exact path="/MyOrders" component={MyOrdersContainer} />
                         </Switch>
                     </div>
                </BrowserRouter>

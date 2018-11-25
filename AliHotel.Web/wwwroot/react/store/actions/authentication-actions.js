@@ -1,6 +1,10 @@
-﻿export const ACTION_LOGIN_REQUEST = 'ACTION_LOGIN_REQUEST';
+﻿import Cookies from 'js-cookie';
+
+export const ACTION_LOGIN_REQUEST = 'ACTION_LOGIN_REQUEST';
 export const ACTION_LOGIN_SUCCESS = 'ACTION_LOGIN_SUCCESS';
 export const ACTION_LOGIN_FAIL = 'ACTION_LOGIN_FAIL';
+
+export const ACTION_LOGOUT = 'ACTION_LOGOUT';
 
 export function handleLogin(email, password) {
     return function (dispatch) {
@@ -38,5 +42,21 @@ export function handleLogin(email, password) {
                     payload: error,
                 })
             });
+    }
+}
+
+export function handleLogout() {
+    return function (dispatch) {
+        fetch('/Account', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),
+            }
+        })
+
+        dispatch({
+            type: ACTION_LOGOUT
+        })
     }
 }

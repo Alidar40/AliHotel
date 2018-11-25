@@ -1,8 +1,8 @@
 ﻿import React from 'react'
 import { connect } from 'react-redux'
 
-import { handleLogin } from '../store/actions/authentication-actions'
 import { Navbar } from '../components/navbar'
+import { handleLogout } from '../store/actions/authentication-actions'
 
 class NavbarContainer extends React.Component {
     render() {
@@ -13,7 +13,9 @@ class NavbarContainer extends React.Component {
                 isLoggedIn={user.isLoggedIn}
                 error={user.error}
                 isFetching={user.isFetching}
-                handleLogin={this.handleLogin}
+                dispatch={this.props.dispatch}
+                handleLogout={handleLogout}
+                history={this.props.history}
             />
         )
     }

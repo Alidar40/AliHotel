@@ -43,23 +43,16 @@ export class Navbar extends React.Component {
     }
     
     handleLogoutClick() {
-        //TODO
-        fetch('/Account', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),
-            }
-        })
-        this.setState({ isLoggedIn: false });
+        this.props.dispatch(this.props.handleLogout())
+        this.props.history.push("/Login")
     }
 
     render() {
         const isLoggedIn = this.props.isLoggedIn;
         const isLoginRequestFailed = this.props.error;
         const name = this.props.name;
-        let button1; //register or my orders
-        let button2; //login or logout
+        let button1;
+        let button2;
 
         if (this.props.isLoggedIn) {
             button1 = <MyOrdersButton/>;

@@ -26,7 +26,7 @@ class HomeContainer extends React.Component {
         const loading = <div className="container body-content"><br /><h3>Loading</h3></div>
         
         if (this.props.location.pathname === "/Login") {
-            if (user.isLoggedIn) {
+            if (user.isLoggedIn && !user.isLoggingOut) {
                 this.props.history.push("/");
             }
 
@@ -40,6 +40,13 @@ class HomeContainer extends React.Component {
         } 
 
         if (this.props.location.pathname === "/") {
+            if (user.isLoggingOut) {
+                this.props.user.isLoggingOut = false;
+                console.log(this.props.user.isLoggingOut)
+                this.props.history.push("/Login");
+                return(<div></div>)
+            }
+
             if (user.isFetchingCurrentOrder) {
                 return (loading)
             }

@@ -1,4 +1,4 @@
-﻿import {ACTION_LOGIN_REQUEST, ACTION_LOGIN_SUCCESS, ACTION_LOGIN_FAIL} from '../actions/authentication-actions'
+﻿import { ACTION_LOGIN_REQUEST, ACTION_LOGIN_SUCCESS, ACTION_LOGIN_FAIL, ACTION_LOGOUT } from '../actions/authentication-actions'
 
 import { ACTION_CURRENT_ORDER_REQUEST, ACTION_CURRENT_ORDER_SUCCESS, ACTION_CURRENT_ORDER_ABSENCE, ACTION_CURRENT_ORDER_FAIL } from '../actions/datafetch-actions'
 import { history } from '../../containers/app'
@@ -8,6 +8,8 @@ export const initialState = {
     name: "",
     isFetchingLogin: false,
     isLoginRequestFailed: false,
+
+    isLoggingOut:false,
 
     currentOrder: null,
     haveCurrentOrder: false,
@@ -30,6 +32,9 @@ export function userReducer(state = initialState, action) {
 
         case ACTION_LOGIN_FAIL:
             return { ...state, isFetchingLogin: false, error: action.payload.error, isLoginRequestFailed: true }
+
+        case ACTION_LOGOUT:
+            return {...initialState, isLoggingOut: true }
 
 
 

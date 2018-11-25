@@ -20,7 +20,7 @@ class App extends React.Component {
     render() {
         return <BrowserRouter>
                     <div>
-                        <NavbarContainer />
+                        <NavbarContainer history={history}/>
                         <Switch>
                             <Route exact path="/" component={HomeContainer} />
                             <Route exact path="/Login" component={HomeContainer} />

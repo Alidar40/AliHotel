@@ -23,11 +23,13 @@ namespace AliHotel.Web.Controllers.Admin
     {
         private readonly IOrderService _orderService;
         private readonly UserManager<User> _userManager;
+        private readonly IUserService _userService;
 
-        public OrdersController(IOrderService orderService, UserManager<User> userManager)
+        public OrdersController(IOrderService orderService, UserManager<User> userManager, IUserService userService)
         {
             _orderService = orderService;
             _userManager = userManager;
+            _userService = userService;
         }
 
         /// <summary>
@@ -58,6 +60,28 @@ namespace AliHotel.Web.Controllers.Admin
             var bill = await _orderService.PayOrder(order.Id);
 
             return Ok(bill.ToString());
+        }
+
+        /// <summary>
+        /// Pays off the order
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("GetCurrentData")]
+        public async Task<object> GetCurrentData()
+        {
+            var activeOrders = await _orderService.GetAsync();
+            if (activeOrders == null)
+            {
+                return NotFound("There are no active orders");
+            }
+
+            var renters = await _userService.GetAsync();
+            if (renters == null)
+            {
+                return NotFound("There is no renters");
+            }
+
+            return Ok(new { name="admin", activeOrders= activeOrders.Where(x => x.IsClosed == false).Select(x => x?.OrderView()), renters = renters.Where(u => u.IsRenter == true).Select(x => x.UserView()) });
         }
     }
 }

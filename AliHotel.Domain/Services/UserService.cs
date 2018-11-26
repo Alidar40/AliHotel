@@ -42,6 +42,11 @@ namespace AliHotel.Domain.Services
         /// <returns></returns>
         public async Task<User> AddAsync(UserRegisterModel userModel)
         {
+            if(userModel.Name.Equals("admin", StringComparison.InvariantCultureIgnoreCase))
+            {
+                throw new ArgumentException("This name is not allowed");
+            }
+
             if (userModel == null)
             {
                 throw new NullReferenceException("userModel == null");

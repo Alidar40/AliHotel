@@ -7,6 +7,7 @@ import createHistory from 'history/createBrowserHistory'
 import NavbarContainer from './navbar-container';
 import HomeContainer from './home-container';
 import MyOrdersContainer from './myorders-container';
+import AdminContainer from './admin-container';
 import Register from '../components/register'
 import Footer from '../components/footer'
 import store from '../store/hotel-store';
@@ -28,6 +29,7 @@ class App extends React.Component {
                             <Route exact path="/Login" component={HomeContainer} />
                             <Route exact path="/MyOrders" component={MyOrdersContainer} />
                             <Route exact path="/Register" component={Register} />
+                            <Route path="/Admin" component={AdminContainer} />
                         </Switch>
                         <Footer />
                     </div>

@@ -36,6 +36,14 @@ function MyOrdersButton(props) {
     return (<NavLink to="/MyOrders" exact ><button className="btn btn-secondary my-2 my-sm-0">My Orders</button></NavLink>);
 }
 
+function AdminUsersButton(props) {
+    return (<NavLink to="/Admin/Users" exact style={{ "textDecoration": "none" }}><span className="nav-link">Users</span></NavLink>);
+}
+
+function AdminOrdersButton(props) {
+    return (<NavLink to="/Admin/Orders" exact style={{ "textDecoration": "none" }}><span className="nav-link">Orders</span></NavLink>);
+}
+
 export class Navbar extends React.Component {
     constructor(props) {
         super(props);
@@ -54,8 +62,16 @@ export class Navbar extends React.Component {
         let button1;
         let button2;
 
+        let adminUsersButton;
+        let adminOrdersButton;
+
         if (this.props.isLoggedIn) {
-            button1 = <MyOrdersButton/>;
+            if (this.props.name === "admin") {
+                adminUsersButton = <AdminUsersButton />;
+                adminOrdersButton = <AdminOrdersButton />;
+            } else {
+                button1 = <MyOrdersButton />;
+            }
             button2 = <LogoutButton onClick={this.handleLogoutClick} />;
         }
 
@@ -67,6 +83,12 @@ export class Navbar extends React.Component {
 
                         <div className="collapse navbar-collapse" id="navbarColor01">
                             <ul className="navbar-nav mr-auto">
+                                <li class="nav-item">
+                                    {adminUsersButton}
+                                </li>
+                                <li class="nav-item">
+                                    {adminOrdersButton}
+                                </li>
                             </ul>
 
                             <Greeting isLoggedIn={this.props.isLoggedIn} name={this.props.name} />

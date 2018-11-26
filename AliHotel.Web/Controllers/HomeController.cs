@@ -37,6 +37,11 @@ namespace AliHotel.Web.Controllers
         {
             if (_signInManager.IsSignedIn(User))
             {
+                if(User.IsInRole(nameof(RolesOptions.Admin)))
+                {
+                    return RedirectToAction("Admin");
+                }
+
                 return View();
             }
             
@@ -56,6 +61,20 @@ namespace AliHotel.Web.Controllers
             }
 
             return View("Index");
+        }
+
+        [Route("/Admin")]
+        public IActionResult Admin()
+        {
+            if (_signInManager.IsSignedIn(User))
+            {
+                if (User.IsInRole(nameof(RolesOptions.Admin)))
+                {
+                    return View("Index");
+                }
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Login");
         }
     }
 }

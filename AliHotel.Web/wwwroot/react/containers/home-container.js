@@ -1,7 +1,7 @@
 ﻿import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 
 import Login from '../components/login'
 import CurrentOrder from '../components/current-order';
@@ -25,6 +25,10 @@ class HomeContainer extends React.Component {
 
         let greeting;
         const loading = <div className="container body-content"><br /><h3>Loading</h3></div>
+
+        if (this.props.user.name === "admin") {
+            return <Redirect to="/Admin" />;
+        }
         
         if (this.props.location.pathname === "/Login") {
             if (user.isLoggedIn && !user.isLoggingOut) {

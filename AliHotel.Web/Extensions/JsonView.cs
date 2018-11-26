@@ -32,5 +32,27 @@ namespace AliHotel.Web.Extensions
             }
             return null;
         }
+
+        /// <summary>
+        /// Method for displaying information about a user
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static object UserView(this User obj)
+        {
+            if (obj != null)
+            {
+                return new
+                {
+                    obj.Id,
+                    obj.Email,
+                    obj.Name,
+                    obj.PhoneNumber,
+                    obj.BirthDate,
+                    obj.CreditCard
+                };
+            }
+            return null;
+        }
     }
 }

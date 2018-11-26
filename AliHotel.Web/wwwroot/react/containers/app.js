@@ -8,6 +8,7 @@ import NavbarContainer from './navbar-container';
 import HomeContainer from './home-container';
 import MyOrdersContainer from './myorders-container';
 import Register from '../components/register'
+import Footer from '../components/footer'
 import store from '../store/hotel-store';
 import { handleLogin } from '../store/actions/authentication-actions'
 
@@ -28,6 +29,7 @@ class App extends React.Component {
                             <Route exact path="/MyOrders" component={MyOrdersContainer} />
                             <Route exact path="/Register" component={Register} />
                         </Switch>
+                        <Footer />
                     </div>
                </BrowserRouter>
     }

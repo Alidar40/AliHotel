@@ -11,9 +11,6 @@ class ActiveUsers extends React.Component {
     }
     
     ActiveUsers(users, columns) {
-        if (this.props.user.adminHaveData === false) {
-            return <div><br/><h3>Hotel is empty. There is no current renters</h3></div>
-        }
         return <div>
             <h2>Current renters</h2>
             <TacoTable
@@ -34,15 +31,19 @@ class ActiveUsers extends React.Component {
         if (user.isFetchingAdminData) {
             return (loading)
         }
-
-        if (user.adminHaveData == false) {
+        
+        if (!user.isLoggedIn) {
             this.props.dispatch(handleFetchAdminData());
             return (loading)
         }
 
-        if (!user.isLoggedIn) {
+        if (user.adminData === null) {
             this.props.dispatch(handleFetchAdminData());
             return (loading)
+        }
+
+        if (user.adminData === "NO_ACTIVE_ORDER") {
+            return <div className="container body-content"><br /><h3>Hotel is empty. There is no current renters</h3></div>
         }
 
         if (this.props.user.adminHaveData) {

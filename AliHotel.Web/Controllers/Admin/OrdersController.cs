@@ -69,19 +69,21 @@ namespace AliHotel.Web.Controllers.Admin
         [HttpGet("GetCurrentData")]
         public async Task<object> GetCurrentData()
         {
-            var activeOrders = await _orderService.GetAsync();
-            if (activeOrders == null)
+            var _activeOrders = await _orderService.GetAsync();
+            var activeOrders = _activeOrders.Where(x => x.IsClosed == false).Select(x => x?.OrderView());
+            if (!activeOrders.Any())
             {
                 return NotFound("There are no active orders");
             }
 
-            var renters = await _userService.GetAsync();
-            if (renters == null)
+            var _renters = await _userService.GetAsync();
+            var renters = _renters.Where(u => u.IsRenter == true).Select(x => x.UserView());
+            if (!renters.Any())
             {
                 return NotFound("There is no renters");
             }
 
-            return Ok(new { name="admin", activeOrders= activeOrders.Where(x => x.IsClosed == false).Select(x => x?.OrderView()), renters = renters.Where(u => u.IsRenter == true).Select(x => x.UserView()) });
+            return Ok(new { name="admin", activeOrders, renters });
         }
     }
 }

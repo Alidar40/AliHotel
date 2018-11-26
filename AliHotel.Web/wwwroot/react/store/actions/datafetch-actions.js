@@ -69,7 +69,7 @@ export function handleFetchAdminData() {
                     response.json().then(data => {
                         dispatch({
                             type: ACTION_ADMIN_DATA_ABSENCE,
-                            payload: data,
+                            name: "admin",
                         })
                     })
                 } else {

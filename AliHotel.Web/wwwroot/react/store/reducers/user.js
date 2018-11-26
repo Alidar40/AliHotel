@@ -35,7 +35,7 @@ export function userReducer(state = initialState, action) {
             return { ...state, isFetchingLogin: true}
 
         case ACTION_LOGIN_SUCCESS:
-            return { ...state, isFetchingLogin: false, name: action.name, isLoggedIn: true, isLoginRequestFailed: false, }
+            return { ...initialState, isFetchingLogin: false, name: action.name, isLoggedIn: true, isLoginRequestFailed: false, }
 
         case ACTION_LOGIN_FAIL:
             return { ...state, isFetchingLogin: false, error: action.payload.error, isLoginRequestFailed: true }
@@ -62,10 +62,10 @@ export function userReducer(state = initialState, action) {
             return { ...state, isFetchingAdminData: true }
 
         case ACTION_ADMIN_DATA_SUCCESS:
-            return { ...state, isFetchingAdminData: false, adminData: action.payload, name: action.payload.name, adminHaveData: true, isLoggedIn: true }
+            return { ...initialState, isFetchingAdminData: false, adminData: action.payload, name: action.payload.name, adminHaveData: true, isLoggedIn: true }
 
         case ACTION_ADMIN_DATA_ABSENCE:
-            return { ...state, isFetchingAdminData: false, adminData: "NO_ACTIVE_ORDER", name: action.payload.name, isLoggedIn: true, adminHaveData: false }
+            return { ...state, isFetchingAdminData: false, adminData: "NO_ACTIVE_ORDER", name: action.name, isLoggedIn: true, adminHaveData: false }
 
         case ACTION_ADMIN_DATA_FAIL:
             return { ...state, isFetchingAdminData: false, error: action.payload.error }

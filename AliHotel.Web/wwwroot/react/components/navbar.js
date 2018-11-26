@@ -83,10 +83,10 @@ export class Navbar extends React.Component {
 
                         <div className="collapse navbar-collapse" id="navbarColor01">
                             <ul className="navbar-nav mr-auto">
-                                <li class="nav-item">
+                                <li className="nav-item">
                                     {adminUsersButton}
                                 </li>
-                                <li class="nav-item">
+                                <li className="nav-item">
                                     {adminOrdersButton}
                                 </li>
                             </ul>

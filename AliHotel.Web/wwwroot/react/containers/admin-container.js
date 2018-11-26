@@ -32,11 +32,6 @@ class AdminContainer extends React.Component {
                 return (loading)
             }
 
-            if (user.adminHaveData == false) {
-                this.props.dispatch(handleFetchAdminData());
-                return (loading)
-            }
-
             if (!user.isLoggedIn) {
                 this.props.dispatch(handleFetchAdminData());
                 return (loading)

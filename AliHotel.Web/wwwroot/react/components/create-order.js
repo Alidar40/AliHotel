@@ -150,7 +150,7 @@ class CreateOrder extends React.Component {
                         <select required onChange={this.handleRoomTypeSelect} value={this.state.roomType} className="form-control" id="roomTypeSelect" >
                             <option value="">Room type</option>
                             <option value="Standart">Standart</option>
-                            <option value="Semi suite">Semi suite</option>
+                            <option value="Semi-suite">Semi suite</option>
                             <option value="Suite">Suite</option>
                         </select>
                     </div>

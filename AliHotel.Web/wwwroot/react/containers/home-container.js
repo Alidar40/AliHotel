@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import Login from '../components/login'
 import CurrentOrder from '../components/current-order';
 import CreateOrder from '../components/create-order';
+import Home from '../components/home';
 import { handleLogin } from '../store/actions/authentication-actions';
 import { handleCurrentOrder } from '../store/actions/datafetch-actions';
 
@@ -71,6 +72,7 @@ class HomeContainer extends React.Component {
         return (
             <div>
                 {greeting}
+                <Home />
             </div>
         )
     }

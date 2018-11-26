@@ -13,16 +13,26 @@ using AliIAuthorizationService = AliHotel.Domain.Interfaces.IAuthorizationServic
 
 namespace AliHotel.Web.Controllers
 {
+    /// <summary>
+    /// Controller for issuing views
+    /// </summary>
     [Produces("application/json")]
-    [Route("/")]
     public class HomeController : Controller
     {
         private readonly SignInManager<User> _signInManager;
+        /// <summary>
+        /// HomeController constructor
+        /// </summary>
+        /// <param name="signInManager"></param>
         public HomeController(SignInManager<User> signInManager)
         {
             _signInManager = signInManager;
         }
 
+        /// <summary>
+        /// Returns main view
+        /// </summary>
+        /// <returns></returns>
         public IActionResult Index()
         {
             if (_signInManager.IsSignedIn(User))
@@ -33,6 +43,10 @@ namespace AliHotel.Web.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Returns view for unathorized users
+        /// </summary>
+        /// <returns></returns>
         [Route("/Login")]
         public IActionResult Login()
         {

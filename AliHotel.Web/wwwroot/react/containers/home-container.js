@@ -43,7 +43,6 @@ class HomeContainer extends React.Component {
         if (this.props.location.pathname === "/") {
             if (user.isLoggingOut) {
                 this.props.user.isLoggingOut = false;
-                console.log(this.props.user.isLoggingOut)
                 this.props.history.push("/Login");
                 return(<div></div>)
             }

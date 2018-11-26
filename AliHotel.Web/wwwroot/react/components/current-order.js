@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie';
 import { TacoTable, DataType, SortDirection, Formatters, Summarizers, TdClassNames } from 'react-taco-table';
 import DatePicker from "react-datepicker";
+import { NavLink } from "react-router-dom";
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-datepicker/dist/react-datepicker-cssmodules.css';
@@ -135,11 +136,13 @@ class CurrentOrder extends React.Component {
 
         this.setState({})
     }
-
+    
     CurrentOrderForm(currentOrderFormatted) {
         if (this.props.user.haveCurrentOrder === false) {
             return <div>
                 <h2>You have not active orders</h2>
+                <br />
+                <NavLink to="/" exact><button className="btn btn-info">Fix it</button></NavLink>
                 <br />
             </div>
         }

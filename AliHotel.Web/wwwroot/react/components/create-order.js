@@ -56,7 +56,6 @@ class CreateOrder extends React.Component {
     }
     
     handleArrivalDatePick(date) {
-        console.log(date.format())
         if (date.getDate() === (new Date()).getDate()) {
             this.setState({ arrivalDate: new Date((new Date()).setHours(23, 59, 59, 99)) })
         } else {

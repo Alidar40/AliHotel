@@ -22,7 +22,7 @@ class OrdersHistory extends React.Component {
                 return response.json();
             })
             .then(data => {
-                if (JSON.stringify(data) === JSON.stringify([{}])) {
+                if (JSON.stringify(data) === JSON.stringify([])) {
                     this.setState({ ordersHistory: "ORDERS_HISTORY_IS_EMPTY", historyFetched: true });
                 } else {
                     delete data.id;

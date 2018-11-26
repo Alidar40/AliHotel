@@ -33,7 +33,7 @@ function LogoutButton(props) {
 }
 
 function MyOrdersButton(props) {
-    return (<button className="btn btn-secondary my-2 my-sm-0"><NavLink to="/MyOrders" exact style={{ color: "white", "textDecoration": "none" }}>My Orders</NavLink></button>);
+    return (<NavLink to="/MyOrders" exact ><button className="btn btn-secondary my-2 my-sm-0">My Orders</button></NavLink>);
 }
 
 export class Navbar extends React.Component {

@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import DatePicker from "react-datepicker";
 import Cookies from 'js-cookie';
+import { NavLink } from "react-router-dom";
 
 Date.prototype.toISOString = function () {
     var tzo = -this.getTimezoneOffset(),
@@ -30,7 +31,6 @@ class Register extends React.Component {
         this.handleCreditCardChange = this.handleCreditCardChange.bind(this);
         
         this.handleRegisterClick = this.handleRegisterClick.bind(this);
-        this.handleLoginClick = this.handleLoginClick.bind(this);
 
         this.RegistrationForm = this.RegistrationForm.bind(this);
         this.ConfirmationSentForm = this.ConfirmationSentForm.bind(this);
@@ -96,10 +96,6 @@ class Register extends React.Component {
             })
     }
 
-    handleLoginClick(event) {
-        this.props.history.push("/Login");
-    }
-
     RegistrationForm() {
         const maxDate = new Date((new Date).setUTCHours(0, 0, 0, 0))
         maxDate.setFullYear(maxDate.getFullYear() - 18)
@@ -158,7 +154,7 @@ class Register extends React.Component {
         return <div className="container jumbotron form-group" style={{background: "white"}}>
             <h3>Check your email for confirmation</h3>
             <br />
-            <button onClick={this.handleLoginClick} className="btn btn-info">Login</button>
+            <NavLink to="/Login" exact><button className="btn btn-info">Login</button></NavLink>
         </div>
     }
 

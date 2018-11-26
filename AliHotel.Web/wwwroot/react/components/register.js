@@ -64,7 +64,6 @@ class Register extends React.Component {
 
     handleBirthDateChange(date) {
         this.setState({ birthDate: new Date(date) });
-        console.log(typeof this.state.birthDate)
     }
 
     handleCreditCardChange(event) {
@@ -73,12 +72,6 @@ class Register extends React.Component {
     
     handleRegisterClick(event) {
         event.preventDefault();
-        /*this.setState({ isConfirmationSent: true })
-        const temp = this.state.birthDate.toISOString().substring(0, 10);
-        //this.setState({ birthDate: temp })
-        console.log(this.state.birthDate.toISOString().substring(0, 10))
-        //console.log(this.state.birthDate)
-        console.log(JSON.stringify(this.state))*/
         fetch('/Account/Register', {
             method: 'POST',
             headers: {
@@ -108,6 +101,8 @@ class Register extends React.Component {
     }
 
     RegistrationForm() {
+        const maxDate = new Date((new Date).setUTCHours(0, 0, 0, 0))
+        maxDate.setFullYear(maxDate.getFullYear() - 18)
         return <div className="container jumbotron form-group" style={{ display: "flex", "flexDirection": "row", background: "white" }}>
             <div className="container form-group" style={{ position: "relative", "marginTop": "10%" }}>
                 <h1 >Create free account</h1>
@@ -138,7 +133,10 @@ class Register extends React.Component {
                             <DatePicker
                                 selected={this.state.birthDate}
                                 onChange={this.handleBirthDateChange}
-                                //18 years
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                maxDate={maxDate}
                                 required={true}
                                 placeholderText="Select your birth day"
                                 className="form-control"
@@ -157,14 +155,14 @@ class Register extends React.Component {
     }
 
     ConfirmationSentForm() {
-        return <div className="container jumbotron form-group">
+        return <div className="container jumbotron form-group" style={{background: "white"}}>
             <h3>Check your email for confirmation</h3>
+            <br />
             <button onClick={this.handleLoginClick} className="btn btn-info">Login</button>
         </div>
     }
 
     render() {
-        console.log(typeof this.state.birthDate)
         if (this.state.isConfirmationSent) {
             return <div>{this.ConfirmationSentForm()}</div>
         } else {

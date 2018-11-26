@@ -4,16 +4,14 @@ import { TacoTable, DataType, SortDirection, Formatters, Summarizers, TdClassNam
 
 import { formatJsonDateToUTC } from '../../utils/date';
 import { handleFetchAdminData } from '../../store/actions/datafetch-actions';
+import Modal from '../modal';
 
 class ActiveOrders extends React.Component {
     constructor(props) {
         super(props);
     }
-
+    
     ActiveOrders(orders, columns) {
-        if (this.props.user.adminHaveData === false) {
-            return <div><br /><h3>Hotel is empty. There is no current orders</h3></div>
-        }
         return <div>
             <h2>Current orders</h2>
             <TacoTable
@@ -23,10 +21,11 @@ class ActiveOrders extends React.Component {
                 data={orders}
                 striped
                 sortable
+                smt="smt"
             />
         </div>
     }
-
+    
     render() {
         const { user } = this.props;
         const loading = <div className="container body-content"><br /><h3>Loading</h3></div>
@@ -35,7 +34,11 @@ class ActiveOrders extends React.Component {
             return (loading)
         }
 
-        if (user.adminHaveData == false) {
+        if (user.adminData === "NO_ACTIVE_ORDER") {
+            return <div className="container body-content"><br /><h3>Hotel is empty. There is no active orders</h3></div>
+        }
+
+        if (user.adminData === null) {
             this.props.dispatch(handleFetchAdminData());
             return (loading)
         }
@@ -76,6 +79,33 @@ class ActiveOrders extends React.Component {
                     id: 'name',
                     type: DataType.String,
                     header: 'Room type',
+                },
+                {
+                    id: 'id',
+                    type: DataType.String,
+                    header: 'Close order',
+                    renderer(cellData, { column, rowData }) {
+                        return <button onClick={() => {
+                            fetch(`/Admin/Orders/CloseOrder?orderId=${rowData.id}`, {
+                                method: 'GET',
+                                headers: {
+                                    'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),
+                                }
+                            })
+                                .then(response => {
+                                    if (response.status == 200) {
+                                        response.json().then(data => {
+                                            console.log(data);
+                                        })
+                                    } else {
+                                        console.log("closing order status code:" + response.status);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error);
+                                })
+                        }} className="btn btn-danger btn-sm">Close order</button>;
+                    },
                 }];
 
             return <div className="container body-content">

@@ -63,7 +63,7 @@ namespace AliHotel.Web.Controllers
             return View("Index");
         }
 
-        [Route("/Admin")]
+        [Route("/Admin/{*catchall}")]
         public IActionResult Admin()
         {
             if (_signInManager.IsSignedIn(User))

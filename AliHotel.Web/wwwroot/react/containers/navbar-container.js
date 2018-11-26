@@ -1,10 +1,15 @@
 ﻿import React from 'react'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 import { Navbar } from '../components/navbar'
 import { handleLogout } from '../store/actions/authentication-actions'
 
 class NavbarContainer extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
     render() {
         const { user } = this.props
         return (
@@ -16,6 +21,7 @@ class NavbarContainer extends React.Component {
                 dispatch={this.props.dispatch}
                 handleLogout={handleLogout}
                 history={this.props.history}
+                match={this.props.match}
             />
         )
     }
@@ -27,4 +33,4 @@ const mapStateToProps = store => {
     }
 }
 
-export default connect(mapStateToProps)(NavbarContainer);
+export default withRouter(connect(mapStateToProps)(NavbarContainer));

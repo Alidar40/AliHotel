@@ -72,7 +72,7 @@ class Register extends React.Component {
     
     handleRegisterClick(event) {
         event.preventDefault();
-        fetch('/Account/Register', {
+        fetch('/api/Account/Register', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

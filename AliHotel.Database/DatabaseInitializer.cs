@@ -38,7 +38,7 @@ namespace AliHotel.Database
                 admin = new User
                 {
                     Name = "admin",
-                    Email = "admin",
+                    Email = "admin@alihotel.com",
                     BirthDate = DateTime.Parse("01/01/1980"),
                     PhoneNumber = "adminNumber",
                     PasswordSalt = passwordSalt,

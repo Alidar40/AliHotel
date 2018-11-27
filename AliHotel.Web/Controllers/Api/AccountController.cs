@@ -19,7 +19,7 @@ namespace AliHotel.Web.Controllers
     /// Controller for registration, logging in/out
     /// </summary>
     [Produces("application/json")]
-    [Route("Account")]
+    [Route("api/Account")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;

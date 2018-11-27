@@ -63,6 +63,10 @@ namespace AliHotel.Web.Controllers
             return View("Index");
         }
 
+        /// <summary>
+        /// Returns view for admin
+        /// </summary>
+        /// <returns></returns>
         [Route("/Admin/{*catchall}")]
         public IActionResult Admin()
         {

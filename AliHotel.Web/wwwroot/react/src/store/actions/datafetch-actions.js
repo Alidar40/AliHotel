@@ -16,7 +16,7 @@ export function handleCurrentOrder() {
             type: ACTION_CURRENT_ORDER_REQUEST,
         })
 
-        fetch('/Orders/Current', {
+        fetch('/api/Orders/Current', {
             method: 'GET',
             headers: {
                 'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),
@@ -58,7 +58,7 @@ export function handleFetchAdminData() {
             type: ACTION_ADMIN_DATA_REQUEST,
         })
 
-        fetch('/Admin/Orders/GetCurrentData', {
+        fetch('/api/Admin/Orders/GetCurrentData', {
             method: 'GET',
             headers: {
                 'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),

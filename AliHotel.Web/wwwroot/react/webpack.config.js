@@ -1,9 +1,9 @@
 ﻿module.exports = {
     context: __dirname,
-    entry: "./index.js",
+    entry: "./src/index.js",
     mode: "development",
     output: {
-        path: __dirname + "/dist",
+        path: __dirname + "/src/dist",
         filename: "bundle.js"
     },
     watch: true,

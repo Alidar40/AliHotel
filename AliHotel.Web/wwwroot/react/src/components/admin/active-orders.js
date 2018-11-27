@@ -86,7 +86,7 @@ class ActiveOrders extends React.Component {
                     header: 'Close order',
                     renderer(cellData, { column, rowData }) {
                         return <button onClick={() => {
-                            fetch(`/Admin/Orders/CloseOrder?orderId=${rowData.id}`, {
+                            fetch(`/api/Admin/Orders/CloseOrder?orderId=${rowData.id}`, {
                                 method: 'GET',
                                 headers: {
                                     'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),

@@ -15,7 +15,6 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using AliHotel.Identity;
-using React.AspNet;
 
 namespace AliHotel.Web
 {
@@ -34,7 +33,6 @@ namespace AliHotel.Web
         {
             services.AddMvc();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddReact();
 
             //Add database context
             services.AddDbContext<DatabaseContext>(x =>
@@ -117,7 +115,6 @@ namespace AliHotel.Web
             });
 
             app.UseStaticFiles();
-            app.UseReact(config => { });
             app.UseMvc();
             app.UseMvc(routes =>
             {

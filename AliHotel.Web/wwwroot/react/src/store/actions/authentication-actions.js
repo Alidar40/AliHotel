@@ -12,7 +12,7 @@ export function handleLogin(email, password) {
             type: ACTION_LOGIN_REQUEST,
         })
 
-        fetch('/Account/Login', {
+        fetch('/api/Account/Login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export function handleLogin(email, password) {
 
 export function handleLogout() {
     return function (dispatch) {
-        fetch('/Account', {
+        fetch('/api/Account', {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ namespace AliHotel.Web.Controllers.Admin
     /// Admin's tools for working with orders
     /// </summary>
     [Produces("application/json")]
-    [Route("Admin/Orders")]
+    [Route("api/Admin/Orders")]
     [Authorize(Roles = nameof(RolesOptions.Admin))]
     public class OrdersController : Controller
     {
@@ -25,6 +25,12 @@ namespace AliHotel.Web.Controllers.Admin
         private readonly UserManager<User> _userManager;
         private readonly IUserService _userService;
 
+        /// <summary>
+        /// Constructor for OrderController
+        /// </summary>
+        /// <param name="orderService"></param>
+        /// <param name="userManager"></param>
+        /// <param name="userService"></param>
         public OrdersController(IOrderService orderService, UserManager<User> userManager, IUserService userService)
         {
             _orderService = orderService;
@@ -63,7 +69,7 @@ namespace AliHotel.Web.Controllers.Admin
         }
 
         /// <summary>
-        /// Pays off the order
+        /// Fetches all data needed for admin
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetCurrentData")]

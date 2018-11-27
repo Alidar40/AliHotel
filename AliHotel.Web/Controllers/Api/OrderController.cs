@@ -17,7 +17,7 @@ namespace AliHotel.Web.Controllers
     /// Controller for orders
     /// </summary>
     [Produces("application/json")]
-    [Route("Orders")]
+    [Route("api/Orders")]
     [Authorize]
     public class OrderController : Controller
     {

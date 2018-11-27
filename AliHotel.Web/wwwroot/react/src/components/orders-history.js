@@ -12,7 +12,7 @@ class OrdersHistory extends React.Component {
             historyFetched: false,
         }
 
-        fetch('/Orders/History', {
+        fetch('/api/Orders/History', {
             method: 'GET',
             headers: {
                 'Set-Cookie': Cookies.get('.AspNetCore.Identity.Application'),

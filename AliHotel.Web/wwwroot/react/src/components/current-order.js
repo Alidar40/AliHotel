@@ -62,7 +62,7 @@ class CurrentOrder extends React.Component {
             isCloseOrderModalRequested: false,
             isClosingConfirmed: false,
             orderClosedResponse: "",
-            newDepartureDate: (new Date()).setHours(0, 0, 0, 0),
+            newDepartureDate: new Date((new Date).setUTCHours(0, 0, 0, 0)),
             isChangingDepDateRequested: false,
             isDepDateChangedWithoutErrors: false,
             changeDepDateResponse: ""
@@ -74,7 +74,7 @@ class CurrentOrder extends React.Component {
     }
 
     handleCloseOrderSubmitClick() {
-        fetch('/Orders/PayOrder', {
+        fetch('/api/Orders/PayOrder', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +104,7 @@ class CurrentOrder extends React.Component {
     }
 
     handleChangeDepDateClick() {
-        fetch('/Orders/DepartureDay', {
+        fetch('/api/Orders/DepartureDay', {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -133,16 +133,16 @@ class CurrentOrder extends React.Component {
     }
 
     handleChangeDepDateFinal() {
-
-        this.setState({})
+        this.setState({ newDepartureDate: new Date((new Date).setUTCHours(0, 0, 0, 0)) })
     }
     
     CurrentOrderForm(currentOrderFormatted) {
         if (this.props.user.haveCurrentOrder === false) {
-            return <div>
+            return <div className="container">
                 <h2>You have not active orders</h2>
                 <br />
                 <NavLink to="/" exact><button className="btn btn-info">Fix it</button></NavLink>
+                <br />
                 <br />
             </div>
         }

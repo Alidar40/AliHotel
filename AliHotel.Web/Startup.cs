@@ -105,6 +105,10 @@ namespace AliHotel.Web
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
 
             app.UseAuthentication();
             app.UseSwagger();

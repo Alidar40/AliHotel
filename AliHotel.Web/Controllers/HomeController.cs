@@ -80,5 +80,14 @@ namespace AliHotel.Web.Controllers
             }
             return RedirectToAction("Login");
         }
+
+        /// <summary>
+        /// Returns special view to a user in case of error
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

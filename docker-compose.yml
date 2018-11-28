@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  alihotel_postgres:
+     image: postgres:11
+     restart: always
+     ports:
+       - 5432:5432
+     environment:
+        POSTGRES_DB: AliHotelDb
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: 1
+     networks:
+       - alihotel-network
+
+  alihotel:
+     image: alihotel.web
+     ports:
+       - 5001:80
+     build:
+       context: ./
+       dockerfile: Dockerfile
+     links:
+       - alihotel_postgres
+     depends_on:
+       - "alihotel_postgres"
+     networks:
+       - alihotel-network
+
+networks:
+  alihotel-network:
+     driver: bridge
